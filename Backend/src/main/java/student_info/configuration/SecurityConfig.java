@@ -1,6 +1,5 @@
 package student_info.configuration;
 
-
 import lombok.RequiredArgsConstructor;
 import student_info.service.CustomUserDetailsService;
 import student_info.util.JwtFilter;
@@ -24,7 +23,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	
     private final JwtFilter jwtFilter;
     private final CustomUserDetailsService userDetailsService;
 
@@ -33,7 +31,12 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/admin/signup", "/api/admin/login").permitAll()
+                        .requestMatchers(
+                                "/api/admin/signup",
+                                "/api/admin/login",
+                                "/api/student/register",
+                                "/api/student/edit/**"
+                        ).permitAll()
                         .requestMatchers("/api/superadmin/**").hasRole("SUPER_ADMIN")
                         .anyRequest().authenticated()
                 )

@@ -23,7 +23,7 @@ public class SuperAdminService {
             admin.setApproved(true);
             adminRepository.save(admin);
             return "Admin approved successfully.";
-        } else {
+        } else { 
             throw new RuntimeException("Admin not found with ID: " + adminId);
         }
     }
