@@ -32,7 +32,13 @@ public class AdminService {
         admin.setAdminEmail(request.getAdminEmail());
         admin.setAdminPassword(passwordEncoder.encode(request.getAdminPassword()));
         admin.setAdminMobileNo(request.getAdminMobileNo());
+        admin.setCourse(request.getCourse());
         admin.setAdminRole(request.getAdminRole());
+        if ("BATCH_MENTOR".equalsIgnoreCase(request.getAdminRole())) {
+            admin.setBatch(request.getBatch());
+        } else {
+            admin.setBatch(null);
+        }
         admin.setApproved(false);
 
         Admin savedAdmin = adminRepository.save(admin);
