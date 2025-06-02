@@ -75,7 +75,8 @@ public class StudentService {
                         .orElse(List.of());
 
             case "name":
-                return studentRepository.findByNameContainingIgnoreCase(value);
+                 return studentRepository.findByNameContainingIgnoreCase(value);
+
 
             case "bloodgroup":
                 return studentRepository.findByBloodGroup(value);
@@ -93,6 +94,11 @@ public class StudentService {
                 return List.of(); // Return empty list for unsupported fields
         }
     }
+
+	public List<Student> findByName(String name) {
+	    return studentRepository.findByNameContainingIgnoreCase(name);
+
+	}
 
 }
 

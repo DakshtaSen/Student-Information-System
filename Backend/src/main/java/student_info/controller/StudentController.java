@@ -2,6 +2,7 @@ package student_info.controller;
 
 import jakarta.validation.Valid;
 import student_info.entity.Student;
+import student_info.repository.StudentRepository;
 import student_info.service.EmailService;
 import student_info.service.StudentService;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ public class StudentController {
 
     private final StudentService studentService;
     private final EmailService emailService;
+
 
     public StudentController(StudentService studentService, EmailService emailService) {
         this.studentService = studentService;
@@ -56,7 +58,10 @@ public class StudentController {
     @GetMapping("/search")
     @PreAuthorize("hasAnyRole('BATCH_MENTOR','PI')")
     public ResponseEntity<List<Student>> searchStudents(@RequestParam String field, @RequestParam String value) {
+        System.out.println("Searching by name: " + value);
+
         List<Student> results = studentService.searchByField(field, value);
+        System.out.println(results);
         return ResponseEntity.ok(results);
     }
 
@@ -106,4 +111,11 @@ public class StudentController {
         studentService.deleteById(id);
         return ResponseEntity.ok("Deleted");
     }
+    
+    @GetMapping("/test")
+    public void test() {
+        System.out.println("student"+studentService.findByName("Sneha Patil"));
+    }
+
+    
 }
