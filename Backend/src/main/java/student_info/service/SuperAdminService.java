@@ -1,6 +1,5 @@
 package student_info.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import student_info.entity.Admin;
 import student_info.repository.AdminRepository;
@@ -20,12 +19,32 @@ public class SuperAdminService {
         Optional<Admin> optionalAdmin = adminRepository.findById(adminId);
         if (optionalAdmin.isPresent()) {
             Admin admin = optionalAdmin.get();
+            if (admin.isApproved()) {
+                return "Admin is already approved.";
+            }
             admin.setApproved(true);
             adminRepository.save(admin);
             return "Admin approved successfully.";
-        } else { 
+        } else {
             throw new RuntimeException("Admin not found with ID: " + adminId);
         }
     }
-}
 
+    public String rejectAdmin(Long adminId) {
+        Optional<Admin> optionalAdmin = adminRepository.findById(adminId);
+
+        if (optionalAdmin.isPresent()) {
+            Admin admin = optionalAdmin.get();
+
+            // ❗ Mark as unverified instead of deleting
+            admin.setApproved(false);
+            adminRepository.save(admin);
+
+            return "Admin has been rejected and marked as unverified.";
+        } else {
+            throw new RuntimeException("Admin not found with ID: " + adminId);
+        }
+    }
+
+
+}
