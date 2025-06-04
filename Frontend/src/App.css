@@ -1,8 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Remove any default margins that might affect full-screen display */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .logo {
