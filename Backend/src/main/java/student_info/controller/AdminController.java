@@ -32,18 +32,7 @@ public class AdminController {
         String response = adminService.registerAdmin(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-//        Authentication authentication = authenticationManager.authenticate(
-//            new UsernamePasswordAuthenticationToken(loginRequest.getAdminEmail(), loginRequest.getAdminPassword()));
-//        
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        String jwt = jwtUtils.generateToken(loginRequest.getAdminEmail());
-//
-//        return ResponseEntity.ok(new AdminJwtResponse(jwt, "Bearer", 3600));
-//    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
