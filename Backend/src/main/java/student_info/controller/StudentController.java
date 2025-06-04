@@ -47,6 +47,8 @@ public class StudentController {
             }
             student.setId(existing.get().getId());
             Student updated = studentService.updateStudent(student);
+            emailService.sendStudentEditConfirmationEmail(updated);
+
             return ResponseEntity.ok(updated);
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

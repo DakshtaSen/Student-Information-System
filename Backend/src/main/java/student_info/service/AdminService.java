@@ -51,6 +51,26 @@ public class AdminService {
     public Optional<Admin> getAdminByEmail(String email) {
         return adminRepository.findByAdminEmail(email);
     }
+    public String approveAdmin(Long adminId) {
+        Optional<Admin> optionalAdmin = adminRepository.findById(adminId);
+
+        if (optionalAdmin.isPresent()) {
+            Admin admin = optionalAdmin.get();
+            admin.setApproved(true);
+            adminRepository.save(admin);
+
+            // ✅ Send email to admin after approval
+            emailService.sendAdminApprovalConfirmationEmail(
+                admin.getAdminName(),
+                admin.getAdminEmail(),
+                admin.getAdminRole()
+            );
+
+            return "Admin approved successfully.";
+        } else {
+            return "Admin not found.";
+        }
+    }
 
     public String loginAdmin(LoginRequest request) {
         Optional<Admin> optional = adminRepository.findByAdminEmail(request.getAdminEmail());
