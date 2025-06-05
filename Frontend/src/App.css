@@ -7,12 +7,18 @@
 
 /* Set root variables for consistent theming */
 :root {
-  --primary-color: #1e3c72;
-  --secondary-color: #2a5298;
-  --background-color: #f8f9fa;
-  --text-color: #333;
+  --bg-primary: #f8f9fa;
+  --bg-secondary: rgba(255, 255, 255, 0.92);
+  --text-primary: #333;
+  --text-secondary: #6c757d;
   --border-color: #e1e5ee;
+  --header-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   --shadow-color: rgba(0, 0, 0, 0.1);
+  --input-bg: white;
+  --hover-bg: #f8f9fa;
+  --accent-color: #2a5298;
+  --header-text: #2a5298;
+  --disabled-bg: #f8f9fa;
 }
 
 body {
@@ -21,9 +27,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  line-height: 1.6;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
 }
 
 .App {
@@ -59,16 +65,17 @@ button, select, input {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background-color);
+  background: #f1f1f1;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--secondary-color);
+  background: var(--accent-color);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-color);
+  background: #1e3c72;
 }
 
 /* Focus styles */
@@ -135,4 +142,13 @@ button, select, input {
 
 .read-the-docs {
   color: #888;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
 }

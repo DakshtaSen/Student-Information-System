@@ -37,6 +37,21 @@ const apiService = {
     }
   },
 
+  // Search students with filters
+  searchStudents: async (searchQuery, filters) => {
+    try {
+      const response = await apiClient.get(`/students/search`, {
+        params: {
+          query: searchQuery,
+          ...filters
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   // Get all available courses
   getCourses: async () => {
     try {
