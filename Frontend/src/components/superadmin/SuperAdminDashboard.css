@@ -1,0 +1,219 @@
+.dashboard-container {
+  padding: 24px;
+}
+
+.dashboard-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1976d2;
+  font-weight: bold;
+}
+
+.dashboard-title-icon {
+  font-size: 40px;
+}
+
+.stat-card {
+  height: 100%;
+  background-color: #fff;
+}
+
+.stat-card-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-avatar {
+  width: 56px;
+  height: 56px;
+}
+
+.stat-avatar-primary {
+  background-color: #1976d2 !important;
+}
+
+.stat-avatar-secondary {
+  background-color: #9c27b0 !important;
+}
+
+.stat-avatar-success {
+  background-color: #2e7d32 !important;
+}
+
+.stat-avatar-warning {
+  background-color: #ed6c02 !important;
+}
+
+.stat-count {
+  font-size: 2rem;
+  color: #1976d2;
+}
+
+.stat-title {
+  color: var(--mui-palette-text-primary);
+}
+
+.tabs-container {
+  margin-bottom: 24px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.tab {
+  text-transform: none;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.tab-selected {
+  color: #1976d2 !important;
+}
+
+.table-container {
+  margin-top: 16px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.table-header {
+  background-color: #1976d2 !important;
+}
+
+.table-header-cell {
+  color: white !important;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar {
+  background-color: #1976d2 !important;
+}
+
+.user-avatar-secondary {
+  background-color: #9c27b0 !important;
+}
+
+.action-button:hover {
+  background-color: #1976d2;
+  color: white;
+}
+
+.verify-button:hover {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.reject-button:hover {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.dialog {
+  min-width: 400px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-title {
+  background-color: #1976d2 !important;
+  color: white !important;
+}
+
+.dialog-content {
+  margin-top: 16px;
+}
+
+.dialog-actions {
+  padding: 16px;
+}
+
+.role-select-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Grid container styles */
+.grid-container {
+  margin-bottom: 32px;
+}
+
+/* Table styles */
+.table-row-hover:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Avatar styles */
+.avatar-primary {
+  background-color: #1976d2 !important;
+}
+
+.avatar-secondary {
+  background-color: #9c27b0 !important;
+}
+
+/* Chip styles */
+.chip-primary {
+  background-color: #1976d2 !important;
+  color: white !important;
+}
+
+.chip-secondary {
+  background-color: #9c27b0 !important;
+  color: white !important;
+}
+
+/* Icon button styles */
+.icon-button-edit {
+  color: #1976d2;
+}
+
+.icon-button-edit:hover {
+  background-color: #1976d2 !important;
+  color: white !important;
+}
+
+.icon-button-verify {
+  color: #2e7d32;
+}
+
+.icon-button-verify:hover {
+  background-color: #2e7d32 !important;
+  color: white !important;
+}
+
+.icon-button-reject {
+  color: #d32f2f;
+}
+
+.icon-button-reject:hover {
+  background-color: #d32f2f !important;
+  color: white !important;
+}
+
+/* Menu item styles */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Form control styles */
+.form-control {
+  width: 100%;
+  margin: 8px 0;
+}
+
+/* Button styles */
+.button-contained {
+  background-color: #1976d2 !important;
+  color: white !important;
+}
+
+.button-outlined {
+  border-color: #1976d2 !important;
+  color: #1976d2 !important;
+} 
