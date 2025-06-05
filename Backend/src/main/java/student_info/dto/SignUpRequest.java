@@ -1,4 +1,4 @@
-package student_info.dto;
+    package student_info.dto;
 
 
 import lombok.*;
@@ -22,6 +22,5 @@ public class SignUpRequest {
 	private String batch ;
 	private String course;
 	
-    
 }
 

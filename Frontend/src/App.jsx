@@ -1,21 +1,24 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from './context/ThemeContext';
-import Login from './components/auth/Login';
-import Signup from './components/auth/Signup';
-import './App.css';
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import './App.css'
+import BatchMentorDashboard from './components/BatchMentorDashboard'
+import StudentDetails from './components/StudentDetails'
+import ProgramIncharge from './components/ProgramIncharge'
+import FilteredStudentList from './components/FilteredStudentList'
 
 function App() {
   return (
-    <ThemeProvider>
-      <Router>
+    <Router>
+      <div className="App">
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<BatchMentorDashboard />} />
+          <Route path="/program-incharge" element={<ProgramIncharge />} />
+          <Route path="/student/:id" element={<StudentDetails />} />
+          <Route path="/filtered-students" element={<FilteredStudentList />} />
         </Routes>
-      </Router>
-    </ThemeProvider>
-  );
+      </div>
+    </Router>
+  )
 }
 
 export default App;
