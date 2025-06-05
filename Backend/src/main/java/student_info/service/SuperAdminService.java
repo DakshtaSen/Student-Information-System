@@ -1,6 +1,7 @@
 package student_info.service;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import student_info.entity.Admin;
 import student_info.repository.AdminRepository;
@@ -19,6 +20,9 @@ public class SuperAdminService {
 
         if (optionalAdmin.isPresent()) {
             Admin admin = optionalAdmin.get();
+            if (admin.isApproved()) {
+                return "Admin is already approved.";
+            }
             admin.setApproved(true);
             adminRepository.save(admin);
 
@@ -34,4 +38,21 @@ public class SuperAdminService {
             throw new RuntimeException("❌ Admin not found with ID: " + adminId);
         }
     }
+
+    public String rejectAdmin(Long adminId) {
+        Optional<Admin> optionalAdmin = adminRepository.findById(adminId);
+
+        if (optionalAdmin.isPresent()) {
+            Admin admin = optionalAdmin.get();
+
+            // ❗ Mark as unverified instead of deleting
+            admin.setApproved(false);
+            adminRepository.save(admin);
+
+            return "Admin has been rejected and marked as unverified.";
+        } else {
+            throw new RuntimeException("Admin not found with ID: " + adminId);
+        }
+    }
+
 }

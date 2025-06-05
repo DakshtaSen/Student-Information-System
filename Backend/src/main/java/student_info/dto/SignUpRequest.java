@@ -22,6 +22,5 @@ public class SignUpRequest {
 	private String batch ;
 	private String course;
 	
-    
 }
 
