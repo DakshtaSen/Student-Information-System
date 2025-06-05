@@ -102,10 +102,19 @@ button, select, input {
 }
 
 #root {
-  max-width: 1280px;
+
+   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+/* Remove any default margins that might affect full-screen display */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .logo {
