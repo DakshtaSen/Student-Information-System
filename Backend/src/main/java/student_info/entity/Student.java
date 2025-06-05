@@ -26,8 +26,8 @@ public class Student {
     private String enrollmentNo;
 
 //    @NotNull(message = "Image is required")
-   @Lob
-   private byte[] image;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")

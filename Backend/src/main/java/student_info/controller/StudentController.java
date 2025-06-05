@@ -1,10 +1,13 @@
 package student_info.controller;
 
 import jakarta.validation.Valid;
+import student_info.dto.StudentFilterRequest;
 import student_info.entity.Student;
 import student_info.repository.StudentRepository;
 import student_info.service.EmailService;
 import student_info.service.StudentService;
+import student_info.specification.StudentSpecification;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +21,14 @@ public class StudentController {
 
     private final StudentService studentService;
     private final EmailService emailService;
-
-
-    public StudentController(StudentService studentService, EmailService emailService) {
+   
+//    private final StudentRepository studentRepository;
+    private final StudentRepository studentrepository;
+    
+    public StudentController(StudentService studentService, EmailService emailService,StudentRepository studentrepository ) {
         this.studentService = studentService;
         this.emailService = emailService;
+		this.studentrepository = studentrepository;
     }
 
     @PostMapping("/register")
@@ -55,17 +61,24 @@ public class StudentController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('PI', 'BATCH_MENTOR')")
     @GetMapping("/search")
-    @PreAuthorize("hasAnyRole('BATCH_MENTOR','PI')")
-    public ResponseEntity<List<Student>> searchStudents(@RequestParam String field, @RequestParam String value) {
-        System.out.println("Searching by name: " + value);
-
-        List<Student> results = studentService.searchByField(field, value);
-        System.out.println(results);
+    public ResponseEntity<List<Student>> searchStudents(@RequestParam String query) {
+    	System.out.println(query);
+        StudentFilterRequest dummyFilter = new StudentFilterRequest();
+        dummyFilter.setSearchTerm(query);
+        List<Student> results = studentrepository.findAll(StudentSpecification.getFilteredStudents(dummyFilter));
         return ResponseEntity.ok(results);
     }
 
-    @GetMapping
+    // 📊 Filter via POST
+    @PostMapping("/filter")
+    public ResponseEntity<List<Student>> filterStudents(@RequestBody StudentFilterRequest filterRequest) {
+        List<Student> results = studentrepository.findAll(StudentSpecification.getFilteredStudents(filterRequest));
+        return ResponseEntity.ok(results);
+    }
+
+    @GetMapping("/All")
     @PreAuthorize("hasAnyRole('BATCH_MENTOR','PI')")
     public ResponseEntity<List<Student>> getAllStudents() {
         return ResponseEntity.ok(studentService.findAll());
@@ -78,7 +91,6 @@ public class StudentController {
         return student.<ResponseEntity<?>>map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
     @PostMapping
     @PreAuthorize("hasRole('BATCH_MENTOR')")
     public ResponseEntity<?> createStudent(@Valid @RequestBody Student student) {
@@ -112,10 +124,10 @@ public class StudentController {
         return ResponseEntity.ok("Deleted");
     }
     
-    @GetMapping("/test")
-    public void test() {
-        System.out.println("student"+studentService.findByName("Sneha Patil"));
-    }
+//    @GetMapping("/test")
+//    public void test() {
+//        System.out.println("student"+studentService.findByName("sneha pathak"));
+//    }
 
     
 }

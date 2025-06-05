@@ -70,9 +70,11 @@ public class StudentService {
                         .orElse(List.of());
 
             case "rollno":
+                System.out.println("Searching rollNo with: " + value);  // Add this
                 return studentRepository.findByRollNo(value)
-                        .map(List::of)
-                        .orElse(List.of());
+
+                    .map(List::of)
+                    .orElse(List.of());
 
             case "name":
                  return studentRepository.findByNameContainingIgnoreCase(value);
@@ -95,10 +97,10 @@ public class StudentService {
         }
     }
 
-	public List<Student> findByName(String name) {
-	    return studentRepository.findByNameContainingIgnoreCase(name);
-
-	}
+//	public List<Student> findByName(String name) {
+//	    return studentRepository.findByNameContainingIgnoreCase(name);
+//
+//	}
 
 }
 

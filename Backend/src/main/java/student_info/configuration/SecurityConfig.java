@@ -35,7 +35,8 @@ public class SecurityConfig {
                                 "/api/admin/signup",
                                 "/api/admin/login",
                                 "/api/student/register",
-                                "/api/student/edit/**"
+                                "/api/student/edit/**",
+                                "/api/student/filter"
                         ).permitAll()
                         .requestMatchers("/api/superadmin/**").hasRole("SUPER_ADMIN")
                         .anyRequest().authenticated()
