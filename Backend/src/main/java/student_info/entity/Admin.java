@@ -34,6 +34,6 @@ public class Admin {
 //    @Column(nullable = false)
     private String batch;
     
-    @NotBlank(message = "Course is required")
+//    @NotBlank(message = "Course is required")
     private String course;
 }

@@ -26,13 +26,14 @@ public class Student {
     private String enrollmentNo;
 
 //    @NotNull(message = "Image is required")
-   @Lob
-   private byte[] image;
+    @Column(name = "image")
+    private String image;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
-
+ 
+    private String gender;
     @NotBlank(message = "Course is required")
     private String course;
 

@@ -1,10 +1,16 @@
 package student_info.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import student_info.entity.Student;
-import student_info.repository.StudentRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import student_info.entity.Admin;
+import student_info.entity.Student;
+import student_info.repository.AdminRepository;
+import student_info.repository.StudentRepository;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +19,7 @@ import java.util.Optional;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final AdminRepository  Adminrepo;
 
     // Submit new student information
     public Student submitStudent(Student student) {
@@ -70,9 +77,11 @@ public class StudentService {
                         .orElse(List.of());
 
             case "rollno":
+                System.out.println("Searching rollNo with: " + value);  // Add this
                 return studentRepository.findByRollNo(value)
-                        .map(List::of)
-                        .orElse(List.of());
+
+                    .map(List::of)
+                    .orElse(List.of());
 
             case "name":
                  return studentRepository.findByNameContainingIgnoreCase(value);
@@ -95,10 +104,51 @@ public class StudentService {
         }
     }
 
-	public List<Student> findByName(String name) {
-	    return studentRepository.findByNameContainingIgnoreCase(name);
 
-	}
+    public Page<Student> findAllPaginated(Pageable pageable) {
+        return studentRepository.findAll(pageable);
+    }
 
+    public Page<Student> getPaginatedStudentsForBM(String email, Pageable pageable) {
+        Admin bmAdmin = Adminrepo.findByAdminEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Batch Mentor not found"));
+
+        String course = bmAdmin.getCourse();
+        String batch = bmAdmin.getBatch();
+
+        return studentRepository.findByCourseAndBatch(course, batch, pageable);
+    }
+
+    // ✅ Edit student if belongs to the same batch & course
+    public String updateStudent(Long studentId, Student request, String adminEmail) {
+        Admin admin = Adminrepo.findByAdminEmail(adminEmail)
+                .orElseThrow(() -> new RuntimeException("Admin not found"));
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        if ("BatchMentor".equalsIgnoreCase(admin.getAdminRole())) {
+            if (!admin.getBatch().equals(student.getBatch()) ||
+                !admin.getCourse().equals(student.getCourse())) {
+                throw new RuntimeException("Access Denied: You can only edit students from your batch and course.");
+            }
+        }
+
+        student.setName(request.getName());
+        student.setContact(request.getContact());
+        student.setEmail(request.getEmail());
+        student.setBatch(request.getBatch());
+        student.setCourse(request.getCourse());
+        student.setAddress(request.getAddress());
+
+        studentRepository.save(student);
+        return "Student updated successfully.";
+    }
+
+    
+//	public List<Student> findByName(String name) {
+//	    return studentRepository.findByNameContainingIgnoreCase(name);
+//
+//	}
 }
 
