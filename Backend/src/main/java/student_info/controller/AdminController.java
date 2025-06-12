@@ -2,7 +2,9 @@ package student_info.controller;
 
 import lombok.RequiredArgsConstructor;
 import student_info.dto.AdminJwtResponse;
+import student_info.dto.EmailRequest;
 import student_info.dto.LoginRequest;
+import student_info.dto.ResetPasswordRequest;
 import student_info.dto.SignUpRequest;
 import student_info.service.AdminService;
 import student_info.util.JwtUtil;
@@ -29,7 +31,14 @@ public class AdminController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> registerAdmin(@Valid @RequestBody SignUpRequest request) {
+        System.out.println("admin data:");
+        System.out.println("Name: " + request.getAdminName());
+        System.out.println("Email: " + request.getAdminEmail());
+        System.out.println("Password: " + request.getAdminPassword());
+        System.out.println("Confirm Password: " + request.getConfirmPassword());
+    	
         String response = adminService.registerAdmin(request);
+    	System.out.println("response "+response);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -63,4 +72,15 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/forgotpassword")
+    public ResponseEntity<String> forgotPassword(@RequestBody EmailRequest request) {
+    	System.out.println("email"+request.getEmail());
+        return adminService.sendResetPasswordLink(request.getEmail());
+    }
+
+    @PostMapping("/resetpassword")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        return adminService.resetPassword(request.getToken(), request.getNewPassword());
+    }
+    
 }

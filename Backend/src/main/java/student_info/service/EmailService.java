@@ -30,8 +30,9 @@ public class EmailService {
     private static final Logger logger = Logger.getLogger(EmailService.class.getName());
 
     public void sendAdminSignUpNotification(String name, String email, String role, Long adminId) {
+    	System.out.println(adminId);
         try {
-            String approvalLink = "http://localhost:8080/api/superadmin/approve?adminId=" + adminId;
+            String approvalLink = "http://localhost:8080/api/superadmin/verify?adminId=" + adminId;
 
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
@@ -114,7 +115,7 @@ public class EmailService {
     public void sendStudentConfirmationEmail(Student student) {
         try {
             String token = generateToken(student.getEnrollmentNo(), student.getEmail());
-            String editLink = "http://localhost:8080/api/student/edit/" + token;
+            String editLink = "http://localhost:8080/api/student/register/" + token;
 
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
@@ -225,4 +226,38 @@ public class EmailService {
             return null;
         }
     }
+    public void sendHtmlMessage(String to, String subject, String resetLink) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
+
+            helper.setFrom("your_email@gmail.com"); // ✅ Replace with your own email
+            helper.setTo(to);
+            helper.setSubject(subject);
+
+            // HTML content
+            String htmlContent = "<div style='font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd;'>"
+                    + "<h2 style='color: #333;'>Reset Your Password</h2>"
+                    + "<p>Hello,</p>"
+                    + "<p>We received a request to reset your password.</p>"
+                    + "<p>Click the button below to reset it:</p>"
+                    + "<a href='" + resetLink + "' style='display: inline-block; margin: 10px 0; padding: 10px 20px; "
+                    + "background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;'>"
+                    + "Reset Password</a>"
+                    + "<p>If you did not request this, you can safely ignore this email.</p>"
+                    + "<br><p style='font-size: 12px; color: #999;'>– Student Management System Team</p>"
+                    + "</div>";
+
+            helper.setText(htmlContent, true); // true = send as HTML
+
+            mailSender.send(message);
+            System.out.println("✅ Email sent successfully to: " + to);
+
+        } catch (MessagingException e) {
+            System.err.println("❌ Error sending email to: " + to);
+            e.printStackTrace();
+            throw new RuntimeException("Failed to send email", e);
+        }
+    }
+
 }

@@ -1,5 +1,7 @@
 package student_info.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -38,5 +40,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>,JpaSpeci
     // Search students by partial address (case insensitive)
     List<Student> findByAddressContainingIgnoreCase(String address);
 
-	List<Student> findAll(Specification<Student> filteredStudents);
+    Page<Student> findAll(Pageable pageable);
+
+    Page<Student> findByCourseAndBatch(String course, String batch, Pageable pageable);
 }

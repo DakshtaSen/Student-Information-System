@@ -11,6 +11,11 @@ import student_info.specification.StudentSpecification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +38,8 @@ public class StudentController {
 
     @PostMapping("/register")
     public ResponseEntity<?> submitStudent(@Valid @RequestBody Student student) {
+    	System.out.println(student.getName());
+    	System.out.println(student.getImage());
         try {
             Student saved = studentService.submitStudent(student);
             emailService.sendStudentConfirmationEmail(saved);
@@ -42,6 +49,34 @@ public class StudentController {
         }
     }
 
+    
+    @GetMapping("/viewstudent")
+    @PreAuthorize("hasAnyRole('PI', 'BATCH_MENTOR')")
+    public ResponseEntity<Page<Student>> getPaginatedStudentsForBM(
+            Authentication authentication,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortBy) {
+
+        String email = authentication.getName(); // get logged-in BM email
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Student> studentPage = studentService.getPaginatedStudentsForBM(email, pageable);
+
+        return ResponseEntity.ok(studentPage);
+    }
+
+    // ✅ PUT update student
+//    @PutMapping("/updateStudent/{id}")
+//    public ResponseEntity<String> updateStudent(@PathVariable Long id,
+//                                                @RequestBody Student request) {
+////        String email = authentication.getName();  // logged-in admin's email
+//        String result = studentService.updateStudent(id, request);
+//        return ResponseEntity.ok(result);
+//    }
+
+    
+    //student can update their info
     @PutMapping("/edit/{token}")
     public ResponseEntity<?> editStudent(@PathVariable String token, @Valid @RequestBody Student student) {
         String[] decoded = emailService.decodeToken(token);
@@ -62,33 +97,43 @@ public class StudentController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
-
+//
     @PreAuthorize("hasAnyRole('PI', 'BATCH_MENTOR')")
     @GetMapping("/search")
     public ResponseEntity<List<Student>> searchStudents(@RequestParam String query) {
-    	System.out.println(query);
         StudentFilterRequest dummyFilter = new StudentFilterRequest();
-        dummyFilter.setSearchTerm(query);
-        List<Student> results = studentrepository.findAll(StudentSpecification.getFilteredStudents(dummyFilter));
+        dummyFilter.setSearchTerm(query);  // Only setting searchTerm
+        List<Student> results = studentrepository.findAll(
+            StudentSpecification.getFilteredStudents(dummyFilter)
+        );
         return ResponseEntity.ok(results);
     }
 
-    // 📊 Filter via POST
+    // 🧩 Case 2 and 3: Course + Batch or Full Filter
     @PostMapping("/filter")
     public ResponseEntity<List<Student>> filterStudents(@RequestBody StudentFilterRequest filterRequest) {
-        List<Student> results = studentrepository.findAll(StudentSpecification.getFilteredStudents(filterRequest));
+        List<Student> results = studentrepository.findAll(
+            StudentSpecification.getFilteredStudents(filterRequest)
+        );
         return ResponseEntity.ok(results);
     }
-
+    
     @GetMapping("/All")
     @PreAuthorize("hasAnyRole('BATCH_MENTOR','PI')")
-    public ResponseEntity<List<Student>> getAllStudents() {
-        return ResponseEntity.ok(studentService.findAll());
+    public ResponseEntity<Page<Student>> getAllStudents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "4") int size) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Student> studentPage = studentService.findAllPaginated(pageable);
+        return ResponseEntity.ok(studentPage);
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('BATCH_MENTOR','PI')")
+    //bm update student
+    @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('BATCH_MENTOR')")
     public ResponseEntity<?> getStudentById(@PathVariable Long id) {
+    	System.out.println("student id"+id);
         Optional<Student> student = studentService.findById(id);
         return student.<ResponseEntity<?>>map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -104,7 +149,7 @@ public class StudentController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/updateStudent/{id}")  //update student by bm
     @PreAuthorize("hasRole('BATCH_MENTOR')")
     public ResponseEntity<?> updateStudent(@PathVariable Long id, @Valid @RequestBody Student student) {
         Optional<Student> existing = studentService.findById(id);
@@ -126,10 +171,5 @@ public class StudentController {
         return ResponseEntity.ok("Deleted");
     }
     
-//    @GetMapping("/test")
-//    public void test() {
-//        System.out.println("student"+studentService.findByName("sneha pathak"));
-//    }
 
-    
 }

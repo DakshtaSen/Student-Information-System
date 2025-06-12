@@ -14,4 +14,6 @@ public class AdminDTO {
     private String adminMobileNo;
     private String adminRole;
     private boolean approved;
+    private String batch;
+    private String course;
 }
