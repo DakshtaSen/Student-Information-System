@@ -1,0 +1,8 @@
+[phases.setup]
+nixpkgs = ["openjdk21"]
+
+[phases.build]
+cmds = ["./mvnw clean install -DskipTests"]
+
+[start]
+cmd = "./mvnw spring-boot:run"
