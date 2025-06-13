@@ -14,6 +14,8 @@ import student_info.entity.Admin;
 import student_info.repository.AdminRepository;
 
 import jakarta.persistence.criteria.Predicate;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -213,5 +215,39 @@ public class AdminService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid reset token");
         }
     }
+    
+
+    public void resetFailedAttempts(String email) {
+           adminRepository.findByAdminEmail(email).ifPresent(admin -> {
+               admin.setFailedAttempts(0);
+               admin.setAccountNonLocked(true);
+               admin.setLockTime(null);
+               adminRepository.save(admin);
+           });
+       }
+
+       public void increaseFailedAttempts(String email) {
+           adminRepository.findByAdminEmail(email).ifPresent(admin -> {
+               int newFailAttempts = admin.getFailedAttempts() + 1;
+               admin.setFailedAttempts(newFailAttempts);
+
+               if (newFailAttempts >= 3) {
+                   admin.setAccountNonLocked(false);
+                   admin.setLockTime(LocalDateTime.now());
+               }
+
+               adminRepository.save(admin);
+           });
+       }
+
+       // 🔹 Find admin by email
+       public Optional<Admin> findByAdminEmail(String email) {
+           return adminRepository.findByAdminEmail(email);
+       }
+
+       // 🔹 Save admin (used to update lock state or other fields)
+       public void saveAdmin(Admin admin) {
+           adminRepository.save(admin);
+       }
 
 }
