@@ -2,7 +2,10 @@
 nixpkgs = ["openjdk21"]
 
 [phases.build]
-cmds = ["./mvnw clean install -DskipTests"]
+cmds = [
+  "chmod +x ./mvnw",  # Ensure execute permissions
+  "./mvnw clean package -DskipTests"  # Changed from install to package
+]
 
 [start]
-cmd = "./mvnw spring-boot:run"
+cmd = "java -jar target/*.jar"  # Changed from spring-boot:run
