@@ -38,8 +38,6 @@ public class StudentController {
 
     @PostMapping("/register")
     public ResponseEntity<?> submitStudent(@Valid @RequestBody Student student) {
-    	System.out.println(student.getName());
-    	System.out.println(student.getImage());
         try {
             Student saved = studentService.submitStudent(student);
             emailService.sendStudentConfirmationEmail(saved);
