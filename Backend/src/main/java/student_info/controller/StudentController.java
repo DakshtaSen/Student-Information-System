@@ -34,7 +34,6 @@ public class StudentController {
         this.studentService = studentService;
         this.emailService = emailService;
 		this.studentrepository = studentrepository;
-
     }
 
     @PostMapping("/register")
@@ -60,9 +59,9 @@ public class StudentController {
             @RequestParam(defaultValue = "name") String sortBy) {
 
         String email = authentication.getName(); // get logged-in BM email
-
+        System.out.println(email);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<Student> studentPage = studentService.getPaginatedStudentsForBM(email, pageable);
+        Page<Student> studentPage = studentService.getPaginatedStudents(email, pageable);
 
         return ResponseEntity.ok(studentPage);
     }
@@ -98,7 +97,7 @@ public class StudentController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
-
+//
     @PreAuthorize("hasAnyRole('PI', 'BATCH_MENTOR')")
     @GetMapping("/search")
     public ResponseEntity<List<Student>> searchStudents(@RequestParam String query) {
@@ -109,7 +108,6 @@ public class StudentController {
         );
         return ResponseEntity.ok(results);
     }
-
 
     // 🧩 Case 2 and 3: Course + Batch or Full Filter
     @PostMapping("/filter")
@@ -134,7 +132,6 @@ public class StudentController {
     //bm update student
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasAnyRole('BATCH_MENTOR')")
-
     public ResponseEntity<?> getStudentById(@PathVariable Long id) {
     	System.out.println("student id"+id);
         Optional<Student> student = studentService.findById(id);

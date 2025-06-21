@@ -215,7 +215,7 @@ public class AdminService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid reset token");
         }
     }
-    
+
 
     public void resetFailedAttempts(String email) {
            adminRepository.findByAdminEmail(email).ifPresent(admin -> {

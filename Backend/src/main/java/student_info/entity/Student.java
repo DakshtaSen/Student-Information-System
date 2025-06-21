@@ -1,5 +1,7 @@
 package student_info.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -36,6 +38,8 @@ public class Student {
     private String email;
  
     private String gender;
+    
+    private Date dob;
     
     @NotBlank(message = "Course is required")
     private String course;

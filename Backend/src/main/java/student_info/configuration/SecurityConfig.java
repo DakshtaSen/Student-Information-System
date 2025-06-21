@@ -35,25 +35,24 @@ public class SecurityConfig {
                 .cors(cors -> cors.configure(http)) // Explicitly enable CORS
                 .exceptionHandling(exception -> 
                     exception.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
-
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html",
+//                                "/swagger-ui/**",
+//                                "/v3/api-docs/**",
+//                                "/swagger-ui.html",
                                 "/api/admin/signup",
                                 "/api/admin/login",
-                                "/api/admin/forgotpassword",   // Allow without auth
                                 "/api/student/register",
-                                "/api/student/edit/**",
-                                "/api/student/filter",
-                                "/api/student/search",
+//                                "/api/student/edit/**",
+//                                "/api/student/filter",
+//                                "/api/student/search",
                                 "/api/admin/forgotpassword",
                                 "/error"
                         ).permitAll()
                         .requestMatchers("/api/superadmin/summary").hasRole("SUPERADMIN")
                         .anyRequest().authenticated()
                 )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

@@ -11,6 +11,7 @@ import student_info.service.AdminService;
 import student_info.util.JwtUtil;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -53,45 +54,49 @@ public class AdminController {
         try {
             Optional<Admin> optionalAdmin = adminService.findByAdminEmail(email);
             if (optionalAdmin.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Admin not found.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "Admin not found."));
             }
 
             Admin admin = optionalAdmin.get();
 
-            // Check if account is locked
+            if (!admin.isApproved()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Map.of("error", "Account not approved."));
+            }
+
             if (!admin.isAccountNonLocked()) {
-                // Check if lock duration (15 min) has passed
                 if (admin.getLockTime() != null &&
                         admin.getLockTime().plusMinutes(15).isBefore(LocalDateTime.now())) {
                     admin.setAccountNonLocked(true);
                     admin.setFailedAttempts(0);
                     admin.setLockTime(null);
-                    adminService.saveAdmin(admin); // reset lock
+                    adminService.saveAdmin(admin);
                 } else {
                     return ResponseEntity.status(HttpStatus.LOCKED)
-                            .body("Your account is locked. Try again after 15 minutes.");
+                            .body(Map.of("error", "Your account is locked. Try again after 15 minutes."));
                 }
             }
 
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, loginRequest.getAdminPassword()));
 
-            // ✅ Reset failed attempts on successful login
             adminService.resetFailedAttempts(email);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateToken(email);
 
-            return ResponseEntity.ok(new AdminJwtResponse(jwt, "Bearer", 3600));
+            return ResponseEntity.ok(
+                    new AdminJwtResponse(jwt, "Bearer", 3600, admin.getAdminRole(), admin.getAdminName())
+            );
 
         } catch (BadCredentialsException ex) {
-            // ✅ Increase failed attempts
             adminService.increaseFailedAttempts(email);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Invalid email or password."));
         } catch (Exception ex) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An unexpected error occurred: " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "An error occurred: " + ex.getMessage()));
         }
     }
 
@@ -106,5 +111,7 @@ public class AdminController {
     public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
         return adminService.resetPassword(request.getToken(), request.getNewPassword());
     }
+
+
     
 }

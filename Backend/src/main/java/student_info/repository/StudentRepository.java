@@ -47,4 +47,6 @@ public interface StudentRepository extends JpaRepository<Student, Long>,JpaSpeci
 
     Page<Student> findByCourseAndBatch(String course, String batch, Pageable pageable);
 
+	Page<Student> findByCourse(String course, Pageable pageable);
+
 }
