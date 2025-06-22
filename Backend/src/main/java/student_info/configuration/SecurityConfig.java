@@ -37,15 +37,15 @@ public class SecurityConfig {
                     exception.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html",
+//                                "/swagger-ui/**",
+//                                "/v3/api-docs/**",
+//                                "/swagger-ui.html",
                                 "/api/admin/signup",
                                 "/api/admin/login",
                                 "/api/student/register",
-                                "/api/student/edit/**",
-                                "/api/student/filter",
-                                "/api/student/search",
+//                                "/api/student/edit/**",
+//                                "/api/student/filter",
+//                                "/api/student/search",
                                 "/api/admin/forgotpassword",
                                 "/error"
                         ).permitAll()

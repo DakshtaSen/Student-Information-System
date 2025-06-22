@@ -1,12 +1,15 @@
 package student_info.repository;
 
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import student_info.entity.Student;
+import student_info.specification.StudentSpecification;
 
 import java.util.Optional;
 import java.util.List;
@@ -43,4 +46,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>,JpaSpeci
     Page<Student> findAll(Pageable pageable);
 
     Page<Student> findByCourseAndBatch(String course, String batch, Pageable pageable);
+
+	Page<Student> findByCourse(String course, Pageable pageable);
+
 }

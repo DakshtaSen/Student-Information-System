@@ -25,4 +25,6 @@ public interface AdminRepository extends JpaRepository<Admin, Long>, JpaSpecific
 
     // ✅ Corrected method for search
     List<Admin> findByAdminNameContainingIgnoreCaseAndAdminRoleIn(String adminName, List<String> roles);
+    List<Admin> findByadminRole(String role);
+
 }
