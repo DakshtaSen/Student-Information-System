@@ -3,10 +3,10 @@ import React from 'react';
 const ProgramInchargeDashboard = () => {
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Program Incharge Dashboard</h1>
-      <p>Welcome to the Program Incharge Dashboard</p>
+      <h1>Batch Mentor Dashboard</h1>
+      <p>Welcome to the Batch Mentor Dashboard</p>
     </div>
   );
 };
+export default ProgramInchargeDashboard;
 
-export default ProgramInchargeDashboard; 

@@ -36,29 +36,5 @@
     transform: rotate(360deg);
   }
 } */
-.mainheader {
-  width: 100%;
-  display: flex
-;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  background: #f5f5f5;
-}
-.clglogo {
-  margin-left: 25px;
-}
-.clglogo img {
-  width: 50%;
-  border-radius: 10px;
-}
-.clgdescription {
-  margin-right: 32px;
-}
-.clgdescription h2 {
-  font-size: 13px;
-  font-family: serif;
-  text-align: right;
-  color: black;
-  letter-spacing: 1px;
-}
+
+/* Remove old mainheader styles since we're using Material-UI now */

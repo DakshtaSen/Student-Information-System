@@ -1,5 +1,6 @@
 .dashboard-container {
-  padding: 24px;
+  padding: 0 60px;
+
 }
 
 .dashboard-title {
@@ -136,11 +137,29 @@
   gap: 8px;
 }
 
+.css-10wpov9-MuiTypography-root {
+  margin: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.75;
+  letter-spacing: 0.00938em;
+}
+.css-ahj2mt-MuiTypography-root {
+  margin: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 1.5;
+  letter-spacing: 0.00938em;
+}
 /* Grid container styles */
 .grid-container {
   margin-bottom: 32px;
 }
-
+.grid-container p{
+  font-size: 2rem;
+}
 /* Table styles */
 .table-row-hover:hover {
   background-color: rgba(0, 0, 0, 0.04);
@@ -216,4 +235,33 @@
 .button-outlined {
   border-color: #1976d2 !important;
   color: #1976d2 !important;
+}
+
+.filter-button {
+  background:linear-gradient(38deg, #2a5298 99%, #3e3337 51%)!important;
+  color: white !important;
+  font-weight: bold !important;
+  text-transform: none !important;
+  padding: 8px 16px !important;
+  border-radius: 4px !important;
+  transition: all 0.3s ease !important;
+}
+
+.filter-button:hover {
+  background: linear-gradient(45deg, rgb(64 84 125) 103%, rgb(19 13 15) 90%) !important;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+}
+
+.clear-button {
+  border-color: #1976d2 !important;
+  color: #1976d2 !important;
+  text-transform: none !important;
+  padding: 8px 16px !important;
+  border-radius: 4px !important;
+  transition: all 0.3s ease !important;
+}
+
+.clear-button:hover {
+  border-color: #1565c0 !important;
+  background-color: rgba(25, 118, 210, 0.1) !important;
 } 
