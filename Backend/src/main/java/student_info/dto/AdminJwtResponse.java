@@ -6,7 +6,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AdminJwtResponse {
-	 private String token;
-	    private String tokenType;
-	    private int expiresIn;
+    private String token;
+    private String tokenType;
+    private int expiresIn;
+    private String adminRole;
+    private String adminName;
 }

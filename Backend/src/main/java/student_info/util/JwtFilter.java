@@ -1,6 +1,5 @@
 package student_info.util;
 
-
 import jakarta.servlet.FilterChain;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.ServletException;
@@ -30,6 +29,20 @@ public class JwtFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain)
             throws ServletException, IOException {
+
+        String path = request.getServletPath();
+
+        // ✅ Skip JWT check for public endpoints
+        if (path.equals("/api/admin/login") ||
+            path.equals("/api/admin/signup") ||
+            path.equals("/api/admin/forgotpassword") ||
+            path.equals("/api/student/register") ||
+            path.equals("/error")) {
+
+            System.out.println("Skipping JWT filter for: " + path);
+            chain.doFilter(request, response);
+            return;
+        }
 
         String authHeader = request.getHeader("Authorization");
         String token = null;

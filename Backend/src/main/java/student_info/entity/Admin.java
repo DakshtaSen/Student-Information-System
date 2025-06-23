@@ -1,6 +1,9 @@
 package student_info.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
@@ -29,4 +32,20 @@ public class Admin {
 
     @Column(nullable = false)
     private boolean approved = false;
+    
+//    @Column(nullable = false)
+    private String batch;
+    
+//    @NotBlank(message = "Course is required")
+    private String course;
+    
+    @Column(name = "failed_attempts")
+    private int failedAttempts = 0;
+
+    @Column(name = "lock_time")
+    private LocalDateTime lockTime;
+
+    @Column(name = "account_non_locked")
+    private boolean accountNonLocked = true;
+
 }

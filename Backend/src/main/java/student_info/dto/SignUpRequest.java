@@ -1,4 +1,4 @@
-package student_info.dto;
+    package student_info.dto;
 
 
 import lombok.*;
@@ -19,7 +19,8 @@ public class SignUpRequest {
     private String confirmPassword;
     private String adminMobileNo;
     private String adminRole; // PI or BatchMentor
+	private String batch ;
+	private String course;
 	
-    
 }
 
