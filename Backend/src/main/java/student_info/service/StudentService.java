@@ -109,14 +109,22 @@ public class StudentService {
         return studentRepository.findAll(pageable);
     }
 
-    public Page<Student> getPaginatedStudentsForBM(String email, Pageable pageable) {
-        Admin bmAdmin = Adminrepo.findByAdminEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Batch Mentor not found"));
+    public Page<Student> getPaginatedStudents(String email, Pageable pageable) {
+        Admin admin = Adminrepo.findByAdminEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Admin not found"));
 
-        String course = bmAdmin.getCourse();
-        String batch = bmAdmin.getBatch();
+        String role = admin.getAdminRole(); // assuming getRole() returns "batchmentor" or "pi"
 
-        return studentRepository.findByCourseAndBatch(course, batch, pageable);
+        String course = admin.getCourse();
+
+        if ("batchmentor".equalsIgnoreCase(role)) {
+            String batch = admin.getBatch();
+            return studentRepository.findByCourseAndBatch(course, batch, pageable);
+        } else if ("pi".equalsIgnoreCase(role)) {
+            return studentRepository.findByCourse(course, pageable);
+        } else {
+            throw new IllegalArgumentException("Invalid admin role: " + role);
+        }
     }
 
     // ✅ Edit student if belongs to the same batch & course

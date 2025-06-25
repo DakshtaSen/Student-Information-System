@@ -1,5 +1,7 @@
 package student_info.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -26,14 +28,19 @@ public class Student {
     private String enrollmentNo;
 
 //    @NotNull(message = "Image is required")
+
     @Column(name = "image")
     private String image;
+
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
  
     private String gender;
+    
+    private Date dob;
+    
     @NotBlank(message = "Course is required")
     private String course;
 
@@ -65,6 +72,5 @@ public class Student {
     @Column(name = "blood_group")
     private String bloodGroup;
 
-//    @NotBlank(message = "Edit token is required") // used for secure edit link
-//    private String editToken;
+   
 }

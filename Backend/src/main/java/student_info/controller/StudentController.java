@@ -57,9 +57,9 @@ public class StudentController {
             @RequestParam(defaultValue = "name") String sortBy) {
 
         String email = authentication.getName(); // get logged-in BM email
-
+        System.out.println(email);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<Student> studentPage = studentService.getPaginatedStudentsForBM(email, pageable);
+        Page<Student> studentPage = studentService.getPaginatedStudents(email, pageable);
 
         return ResponseEntity.ok(studentPage);
     }
