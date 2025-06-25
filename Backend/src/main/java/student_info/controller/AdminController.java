@@ -109,6 +109,8 @@ public class AdminController {
 
     @PostMapping("/resetpassword")
     public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+    	System.out.println(request.getToken());
+    	System.out.println(request.getNewPassword());
         return adminService.resetPassword(request.getToken(), request.getNewPassword());
     }
 

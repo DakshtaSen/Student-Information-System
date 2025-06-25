@@ -207,41 +207,42 @@ public class EmailService {
         }
     }
 
-    public void sendPasswordResetEmail(Admin admin) {
-        try {
-            String encodedToken = Base64.getEncoder().encodeToString(admin.getAdminEmail().getBytes());
-            String resetLink = "http://localhost:3000/resetpassword?token=" + encodedToken;
-
-            sendHtmlMessage(admin.getAdminEmail(), "Reset Your Password", resetLink);
-        } catch (Exception e) {
-            logger.severe("❌ Failed to prepare password reset email: " + e.getMessage());
-        }
-    }
-
-    public void sendHtmlMessage(String to, String subject, String resetLink) {
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
-
-            helper.setFrom(from);
-            helper.setTo(to);
-            helper.setSubject(subject);
-
-            String html = "<div style='font-family: Arial; padding: 20px;'>"
-                    + "<h2>Reset Your Password</h2>"
-                    + "<p>Click below to reset:</p>"
-                    + "<a href='" + resetLink + "' style='background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Reset</a>"
-                    + "<p>If not requested by you, ignore this email.</p>"
-                    + "</div>";
-
-            helper.setText(html, true);
-            mailSender.send(message);
-            logger.info("🔐 Password reset email sent to: " + to);
-        } catch (MessagingException e) {
-            logger.severe("❌ Failed to send reset email to: " + to);
-        }
-    }
-
+	    public void sendPasswordResetEmail(Admin admin) {
+	        try {
+	            String encodedToken = Base64.getEncoder().encodeToString(admin.getAdminEmail().getBytes());
+	            System.out.println(encodedToken);
+	            String resetLink = "http://localhost:3000/reset-password?token=" + encodedToken;
+	
+	            sendHtmlMessage(admin.getAdminEmail(), "Reset Your Password", resetLink);
+	        } catch (Exception e) {
+	            logger.severe("❌ Failed to prepare password reset email: " + e.getMessage());
+	        }
+	    }
+	
+	    public void sendHtmlMessage(String to, String subject, String resetLink) {
+	        try {
+	            MimeMessage message = mailSender.createMimeMessage();
+	            MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
+	
+	            helper.setFrom(from);
+	            helper.setTo(to);
+	            helper.setSubject(subject);
+	
+	            String html = "<div style='font-family: Arial; padding: 20px;'>"
+	                    + "<h2>Reset Your Password</h2>"
+	                    + "<p>Click below to reset:</p>"
+	                    + "<a href='" + resetLink + "' style='background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Reset</a>"
+	                    + "<p>If not requested by you, ignore this email.</p>"
+	                    + "</div>";
+	
+	            helper.setText(html, true);
+	            mailSender.send(message);
+	            logger.info("🔐 Password reset email sent to: " + to);
+	        } catch (MessagingException e) {
+	            logger.severe("❌ Failed to send reset email to: " + to);
+	        }
+	    }
+	
 
     // ✅ Token Utility
     public String generateToken(String enrollmentNo, String email) {
