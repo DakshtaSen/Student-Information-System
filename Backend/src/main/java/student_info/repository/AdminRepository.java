@@ -23,8 +23,10 @@ public interface AdminRepository extends JpaRepository<Admin, Long>, JpaSpecific
 
     long countByAdminRoleAndApproved(String adminRole, boolean approved);
 
-    // ✅ Corrected method for search
     List<Admin> findByAdminNameContainingIgnoreCaseAndAdminRoleIn(String adminName, List<String> roles);
+    
     List<Admin> findByadminRole(String role);
+
+	List<Admin> findByAdminRoleAndApprovedTrue(String role);
 
 }

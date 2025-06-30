@@ -15,9 +15,7 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                 .allowedOriginPatterns(
-//                		"http://192.168.232.166:3000",
-                        "http://localhost:3000",
-                        "https://5j4cg1sh-3000.inc1.devtunnels.ms/" // ✅ allow VS Code tunnel
+                        "http://localhost:3000"
                     )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                         .allowedHeaders("*")

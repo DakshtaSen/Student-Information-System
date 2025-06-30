@@ -1,7 +1,5 @@
 package student_info.dto;
 
-
-
 import lombok.*;
 
 @Getter 

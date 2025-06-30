@@ -135,7 +135,6 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
-    // ✅ SEARCH by name
     public List<AdminDTO> searchAdminsByName(String name) {
         List<String> roles = List.of("PI", "BatchMentor");
         return adminRepository.findByAdminNameContainingIgnoreCaseAndAdminRoleIn(name, roles)
