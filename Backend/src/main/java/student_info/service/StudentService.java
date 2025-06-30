@@ -141,7 +141,6 @@ public class StudentService {
                 throw new RuntimeException("Access Denied: You can only edit students from your batch and course.");
             }
         }
-
         student.setName(request.getName());
         student.setContact(request.getContact());
         student.setEmail(request.getEmail());
@@ -152,11 +151,5 @@ public class StudentService {
         studentRepository.save(student);
         return "Student updated successfully.";
     }
-
-    
-//	public List<Student> findByName(String name) {
-//	    return studentRepository.findByNameContainingIgnoreCase(name);
-//
-//	}
 }
 

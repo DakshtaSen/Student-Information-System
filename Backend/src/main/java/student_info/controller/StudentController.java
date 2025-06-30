@@ -65,18 +65,7 @@ public class StudentController {
 
         return ResponseEntity.ok(studentPage);
     }
-
-    // ✅ PUT update student
-//    @PutMapping("/updateStudent/{id}")
-//    public ResponseEntity<String> updateStudent(@PathVariable Long id,
-//                                                @RequestBody Student request) {
-////        String email = authentication.getName();  // logged-in admin's email
-//        String result = studentService.updateStudent(id, request);
-//        return ResponseEntity.ok(result);
-//    }
-
     
-    //student can update their info
     @PutMapping("/edit/{token}")
     public ResponseEntity<?> editStudent(@PathVariable String token, @Valid @RequestBody Student student) {
         String[] decoded = emailService.decodeToken(token);
@@ -97,7 +86,7 @@ public class StudentController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
-//
+
     @PreAuthorize("hasAnyRole('PI', 'BATCH_MENTOR')")
     @GetMapping("/search")
     public ResponseEntity<List<Student>> searchStudents(@RequestParam String query) {
@@ -109,7 +98,7 @@ public class StudentController {
         return ResponseEntity.ok(results);
     }
 
-    // 🧩 Case 2 and 3: Course + Batch or Full Filter
+
     @PostMapping("/filter")
     public ResponseEntity<List<Student>> filterStudents(@RequestBody StudentFilterRequest filterRequest) {
         List<Student> results = studentrepository.findAll(
@@ -137,16 +126,6 @@ public class StudentController {
         Optional<Student> student = studentService.findById(id);
         return student.<ResponseEntity<?>>map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-    @PostMapping
-    @PreAuthorize("hasRole('BATCH_MENTOR')")
-    public ResponseEntity<?> createStudent(@Valid @RequestBody Student student) {
-        try {
-            Student saved = studentService.submitStudent(student);
-            return ResponseEntity.ok(saved);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
     }
 
     @PutMapping("/updateStudent/{id}")  //update student by bm

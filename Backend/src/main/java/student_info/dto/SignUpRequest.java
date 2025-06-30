@@ -18,7 +18,7 @@ public class SignUpRequest {
     private String adminPassword;
     private String confirmPassword;
     private String adminMobileNo;
-    private String adminRole; // PI or BatchMentor
+    private String adminRole; 
 	private String batch ;
 	private String course;
 	

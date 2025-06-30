@@ -32,7 +32,6 @@ public class SuperAdminController {
 		this.adminservice = adminservice;
     }
 
-    // ✅ Approve Admin via email clickable link
     @GetMapping("/approve")
     public ResponseEntity<String> approveAdminViaLink(@RequestParam Long adminId) {
         try {
@@ -43,7 +42,6 @@ public class SuperAdminController {
         }
     }
 
-    // ✅ Reject Admin via email clickable link
     @GetMapping("/reject")
     public ResponseEntity<String> rejectAdminViaLink(@RequestParam Long adminId) {
         try {
@@ -54,7 +52,6 @@ public class SuperAdminController {
         }
     }
 
-    // ✅ View Unverified Admins
     @GetMapping("/unverified")
     public ResponseEntity<List<Admin>> getUnverifiedAdmins() {
     	List<Admin> unverified=adminRepository.findByApproved(false);
@@ -63,53 +60,12 @@ public class SuperAdminController {
         return ResponseEntity.ok(unverified);
     }
 
-    // ✅ View Verified Admins
     @GetMapping("/verified")
     public ResponseEntity<List<Admin>> getVerifiedAdmins() {
         List<Admin> verifiedAdmins = adminRepository.findByApproved(true);
         System.out.println("Found " + verifiedAdmins.size() + " verified admins");
         return ResponseEntity.ok(verifiedAdmins);
     }
-    
-//dynamic search pi and bm  on the basis of name 
-//filter on the basis of course ,batch,role
-    
-    
-    // ✅ Get list of verified Batch Mentors
-//    @GetMapping("/batchmentors")
-//    public ResponseEntity<List<Admin>> getBatchMentors() {
-//    	List<Admin> batchMentor=adminRepository.findByAdminRoleAndApproved("BatchMentor", true);
-//        System.out.println("Found " + batchMentor.size() + " verified bm");
-//
-//        return ResponseEntity.ok(batchMentor);
-//    }
-
-    // ✅ Get list of verified PIs
-//    @GetMapping("/pis")
-//    public ResponseEntity<List<Admin>> getPIs() {
-//    	List<Admin>pi=adminRepository.findByAdminRoleAndApproved("PI", true);
-//        System.out.println("Found " + pi.size() + " verified pi");
-//        return ResponseEntity.ok(pi);
-//    }
-
-    // ✅ Count summary
-//    @GetMapping("/summary")
-//    public ResponseEntity<?> getAdminSummary() {
-//        long totalVerified = adminRepository.countByApproved(true);
-//        long totalUnverified = adminRepository.countByApproved(false);
-//        long totalPIs = adminRepository.countByAdminRoleAndApproved("PI", true);
-//        long totalBatchMentors = adminRepository.countByAdminRoleAndApproved("BatchMentor", true);
-//
-//        return ResponseEntity.ok(
-//            Map.of(
-//                "totalVerified", totalVerified,
-//                "totalUnverified", totalUnverified,
-//                "totalPIs", totalPIs,
-//                "totalBatchMentors", totalBatchMentors
-//            )
-//        );
-//    }
-
     
     @GetMapping("/search")
     public ResponseEntity<List<AdminDTO>> searchAdmins(@RequestParam String name) {
@@ -133,12 +89,10 @@ public class SuperAdminController {
 
         List<Admin> users;
 			users = adminservice.getAllAdmins();
-			// TODO Auto-generated catch block
         return ResponseEntity.ok(users);
     }
 
     
-    // ✅ Approve via button (POST)
     @PatchMapping("/approve/{adminId}")
     public ResponseEntity<String> approveAdmin(@PathVariable Long adminId) {
     	System.out.println("adminid"+adminId);
@@ -161,10 +115,7 @@ public class SuperAdminController {
         	System.out.println("admin not verified");
         }
     }
-
-
     
-    // ✅ Reject via button (POST)
     @DeleteMapping("/reject/{adminId}")
     public ResponseEntity<String> rejectAdmin(@PathVariable Long adminId) {
     	System.out.println("delte admin with id "+adminId);
