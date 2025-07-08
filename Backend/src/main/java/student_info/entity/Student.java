@@ -58,6 +58,12 @@ public class Student {
 
     @Column(name = "blood_group")
     private String bloodGroup;
+    
+    private String admissionSlip;
+    
+    private String aadharImage;
+    
+    private String cuetno;
 
    
 }
