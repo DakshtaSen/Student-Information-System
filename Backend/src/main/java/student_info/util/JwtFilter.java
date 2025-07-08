@@ -32,7 +32,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        // ✅ Skip JWT check for public endpoints
         if (path.equals("/api/admin/login") ||
             path.equals("/api/admin/signup") ||
             path.equals("/api/admin/forgotpassword") ||

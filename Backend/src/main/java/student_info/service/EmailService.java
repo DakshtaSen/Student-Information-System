@@ -15,6 +15,7 @@ import student_info.entity.Admin;
 import student_info.entity.Student;
 import student_info.repository.AdminRepository;
 
+import java.net.URLEncoder;
 //import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -39,10 +40,11 @@ public class EmailService {
         try {
             String approvalLink = "http://localhost:8080/api/superadmin/verify?adminId=" + adminId;
 
-            List<Admin> superAdmins = adminRepository.findByadminRole("SUPERADMIN");
+            // ✅ Fetch only approved Super Admins
+            List<Admin> superAdmins = adminRepository.findByAdminRoleAndApprovedTrue("SUPERADMIN");
 
             if (superAdmins.isEmpty()) {
-                logger.warning("⚠️ No super admins found in the database.");
+                logger.warning("⚠️ No approved super admins found in the database.");
                 return;
             }
 
@@ -77,7 +79,7 @@ public class EmailService {
             helper.setText(html, true);
             mailSender.send(message);
 
-            logger.info("✅ Email sent to all Super Admins.");
+            logger.info("✅ Email sent to all approved Super Admins.");
         } catch (MessagingException | MailException e) {
             logger.log(Level.SEVERE, "❌ Error sending Super Admin email: " + e.getMessage(), e);
         }
@@ -209,10 +211,19 @@ public class EmailService {
 
     public void sendPasswordResetEmail(Admin admin) {
         try {
-            String encodedToken = Base64.getEncoder().encodeToString(admin.getAdminEmail().getBytes());
-            String resetLink = "http://localhost:3000/resetpassword?token=" + encodedToken;
+            // Use URL-safe Base64 encoding and proper charset
+            String encodedToken = Base64.getUrlEncoder().encodeToString(
+                admin.getAdminEmail().getBytes(StandardCharsets.UTF_8)
+            );
+            
+            // URL encode the token to handle any special characters
+            String urlEncodedToken = URLEncoder.encode(encodedToken, StandardCharsets.UTF_8.name());
+            String resetLink = "http://localhost:3000/resetpassword?token=" + urlEncodedToken;
 
-            sendHtmlMessage(admin.getAdminEmail(), "Reset Your Password", resetLink);
+            // Log for debugging purposes
+            logger.info("🔐 Generated password reset link: " + resetLink);
+
+            sendHtmlMessage(admin.getAdminEmail(), "Password Reset Request", resetLink);
         } catch (Exception e) {
             logger.severe("❌ Failed to prepare password reset email: " + e.getMessage());
         }
@@ -227,21 +238,35 @@ public class EmailService {
             helper.setTo(to);
             helper.setSubject(subject);
 
-            String html = "<div style='font-family: Arial; padding: 20px;'>"
-                    + "<h2>Reset Your Password</h2>"
-                    + "<p>Click below to reset:</p>"
-                    + "<a href='" + resetLink + "' style='background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Reset</a>"
-                    + "<p>If not requested by you, ignore this email.</p>"
-                    + "</div>";
+            // Improved HTML email with better styling and fallback text
+            String html = "<!DOCTYPE html>"
+                    + "<html>"
+                    + "<head>"
+                    + "<meta charset='UTF-8'>"
+                    + "<style>"
+                    + "  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }"
+                    + "  .button { background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold; }"
+                    + "  .footer { margin-top: 20px; font-size: 12px; color: #777; }"
+                    + "</style>"
+                    + "</head>"
+                    + "<body>"
+                    + "<h2>Password Reset Request</h2>"
+                    + "<p>We received a request to reset your password. Click the button below link to proceed:</p>"
+                    + "<p><code>" + resetLink + "</code></p>"
+                    + "<div class='footer'>"
+                    + "<p>If you didn't request this password reset, please ignore this email.</p>"
+                    + "<p>This link will expire in 24 hours for security reasons.</p>"
+                    + "</div>"
+                    + "</body>"
+                    + "</html>";
 
             helper.setText(html, true);
             mailSender.send(message);
-            logger.info("🔐 Password reset email sent to: " + to);
+            logger.info("✅ Password reset email successfully sent to: " + to);
         } catch (MessagingException e) {
-            logger.severe("❌ Failed to send reset email to: " + to);
+            logger.severe("❌ Failed to send reset email to: " + to + " - Error: " + e.getMessage());
         }
     }
-
 
     // ✅ Token Utility
     public String generateToken(String enrollmentNo, String email) {

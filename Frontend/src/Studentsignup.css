@@ -355,6 +355,7 @@
   height: 100%;
   opacity: 0;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .file-upload-label {
@@ -363,7 +364,7 @@
   font-size: 1.1rem;
 }
 
-.image-preview {
+/* .image-preview {
   margin-top: 1rem;
   padding: 0.8rem;
   background: white;
@@ -371,6 +372,19 @@
   font-size: 0.9rem;
   color: #1a2a6c;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+} */
+.imagesection {
+  display: flex
+;
+  justify-content: space-around;
+}
+.imagesection .form-group {
+  margin-bottom: 13px;
+  width: 120%;
+  margin-right: 10px;
+}
+.imagesection label {
+  margin-bottom: 0;
 }
 
 .submit-section {

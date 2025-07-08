@@ -5,7 +5,11 @@ import { styled, keyframes } from '@mui/system';
 import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import Kushagraimg from '../assets/kushagraimg.jpg';
-
+import Lakshyaimg from '../assets/lakshyaphoto.jpg';
+import Paridhiimg from '../assets/paridhiphoto.jpg';
+import Dakshtaimg from '../assets/dakshtaphoto.jpg';
+import Ronakimg from '../assets/ronakimg.jpg';
+import Rimzimimg from '../assets/rimzimphoto.jpg';
 // Playful bounce for heading
 const bounceIn = keyframes`
   0% { transform: scale(0.7); opacity: 0; }
@@ -66,20 +70,20 @@ const developers = [
   {
     name: 'Lakshya Bagora',
     role: 'Backend Developer',
-    img: 'https://randomuser.me/api/portraits/women/44.jpg',
+    img: Lakshyaimg,
     bio: 'Loves designing robust APIs and scalable backend systems with Java and Spring Boot.'
   },
   {
     name: 'Ronak',
     role: 'Bakend Developer',
-    img: 'https://randomuser.me/api/portraits/men/65.jpg',
+    img: Ronakimg,
     
     bio: 'Enjoys working across the stack and bringing ideas to life from database to UI.'
   },
   {
     name: 'Paridhi Patidar',
     role: 'Backend Developer',
-    img: 'https://randomuser.me/api/portraits/women/68.jpg',
+    img: Paridhiimg,
     bio: 'Designs intuitive and delightful user experiences for web and mobile apps.'
   },
   {
@@ -91,13 +95,13 @@ const developers = [
   {
     name: 'Rimzim Soni',
     role: 'Frontend Developer',
-    img: 'https://randomuser.me/api/portraits/women/50.jpg',
+    img: Rimzimimg,
     bio: 'Ensures the highest quality by testing and breaking things before users do.'
   },
   {
     name: 'Dakshta Sen',
     role: 'Frontend Developer',
-    img: 'https://randomuser.me/api/portraits/men/80.jpg',
+    img: Dakshtaimg,
     bio: 'Keeps the team on track and ensures timely delivery of awesome products.'
   }
 ];

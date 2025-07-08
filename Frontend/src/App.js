@@ -263,6 +263,7 @@ function App() {
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/student-signup" element={<Studentsignup />} />
                 <Route path="/developers" element={<MeetOurDeveloper />} />
+                
 
                 {/* Protected Routes */}
                 <Route

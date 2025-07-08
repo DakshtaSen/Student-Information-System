@@ -13,6 +13,4 @@ public class AdminUpdateRequest {
     private String role;
     private String batch;
     private String course;
-
-    // getters and setters
 }
