@@ -48,6 +48,7 @@ export const ColorModeContext = createContext({ toggleColorMode: () => { } });
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('token');
   const userRole = localStorage.getItem('userRole');
+  console.log('Checking access:', { userRole, allowedRoles });
 
   if (!token) {
     return <Navigate to="/login" replace />;
@@ -178,6 +179,7 @@ function App() {
             alignItems: 'center',
             gap: 2
           }}>
+          
            <Button
               component={Link}
               to="/student-signup"
@@ -262,6 +264,7 @@ function App() {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/student-signup" element={<Studentsignup />} />
+                <Route path="/student/edit/:token" element={<Studentsignup isEditMode={true} />} />
                 <Route path="/developers" element={<MeetOurDeveloper />} />
                 
 
