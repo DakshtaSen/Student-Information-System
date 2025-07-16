@@ -41,7 +41,8 @@ public class SecurityConfig {
                                 "/api/admin/login",
                                 "/api/student/register",
                                 "/api/admin/forgotpassword",
-                                "api/admin/resetpassword",
+                                "/api/admin/resetpassword",
+                                "/api/student/editstudent/",
                                 "/error"
                         ).permitAll()
                         .requestMatchers("/api/superadmin/summary").hasRole("SUPERADMIN")
