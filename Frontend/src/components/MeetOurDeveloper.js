@@ -10,6 +10,7 @@ import Paridhiimg from '../assets/paridhiphoto.jpg';
 import Dakshtaimg from '../assets/dakshtaphoto.jpg';
 import Ronakimg from '../assets/ronakimg.jpg';
 import Rimzimimg from '../assets/rimzimphoto.jpg';
+import Sidharthimg from '../assets/sidharthphoto.jpg';
 // Playful bounce for heading
 const bounceIn = keyframes`
   0% { transform: scale(0.7); opacity: 0; }
@@ -89,7 +90,7 @@ const developers = [
   {
     name: 'Sidharth Valecha',
     role: 'Backend Developer',
-    img: 'https://randomuser.me/api/portraits/men/75.jpg',
+    img: Sidharthimg,
     bio: 'Automates deployments and ensures smooth CI/CD pipelines for the team.'
   },
   {
