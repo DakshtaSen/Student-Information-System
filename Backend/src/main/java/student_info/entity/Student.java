@@ -7,11 +7,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Entity
-@Table(name = "students",
-uniqueConstraints = {
-        @UniqueConstraint(columnNames = "roll_no"),
-        @UniqueConstraint(columnNames = "email")
-    })
+@Table(name = "students")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,16 +20,11 @@ public class Student {
     private Long id;
 
     private String name;
-    @Column(name = "enrollment_no")
-
+    
+    @Column(name = "enrollment_no", unique = true)
     private String enrollmentNo;
 
     private String image;
-
-
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
-    private String email;
  
     private String gender;
     
@@ -45,8 +36,11 @@ public class Student {
 
     private String contact;
 
-    @Column(name = "roll_no")
+    @Column(name = "roll_no", nullable = false, unique = true)
     private String rollNo;
+
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "father_name")
     private String fatherName;

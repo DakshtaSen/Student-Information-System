@@ -119,11 +119,10 @@ public class EmailService {
         }
     }
 
-    // ✅ 3. Send Confirmation to Student after form submit
     public void sendStudentConfirmationEmail(Student student) {
         try {
-            String token = generateToken(student.getEnrollmentNo(), student.getEmail());
-            String editLink = "http://localhost:8080/api/student/register/" + token;
+            String token = generateToken(student.getId(), student.getEmail());
+            String editLink = "http://localhost:3000/student/edit/" + token; // React frontend link
 
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -150,7 +149,9 @@ public class EmailService {
                             <li><strong>Address:</strong> %s</li>
                             <li><strong>Blood Group:</strong> %s</li>
                         </ul>
-                        <p><a href="%s" style="color: #27AE60;">Edit My Info</a></p>
+                        <p>
+                            <a href="%s" style="color: #27AE60;">Edit My Info</a>
+                        </p>
                     </body>
                 </html>
             """,
@@ -160,52 +161,9 @@ public class EmailService {
 
             helper.setText(html, true);
             mailSender.send(message);
-            logger.info("📩 Student confirmation sent.");
+            logger.info("📩 Student registration confirmation email sent to: " + student.getEmail());
         } catch (MessagingException | MailException e) {
-            logger.severe("❌ Failed to send student confirmation: " + e.getMessage());
-        }
-    }
-
-    // ✅ 4. Send Email after Student edits info
-    public void sendStudentEditConfirmationEmail(Student student) {
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-            helper.setFrom(from);
-            helper.setTo(student.getEmail());
-            helper.setSubject("📝 Student Info Updated");
-
-            String html = String.format("""
-                <html>
-                    <body style="font-family: Arial;">
-                        <h2 style="color: #2980B9;">Info Updated</h2>
-                        <p>Your latest data:</p>
-                        <ul>
-                            <li><strong>Enrollment No:</strong> %s</li>
-                            <li><strong>Course:</strong> %s</li>
-                            <li><strong>Batch:</strong> %s</li>
-                            <li><strong>Roll No:</strong> %s</li>
-                            <li><strong>Email:</strong> %s</li>
-                            <li><strong>Contact:</strong> %s</li>
-                            <li><strong>Father's Name:</strong> %s</li>
-                            <li><strong>Parent Contact:</strong> %s</li>
-                            <li><strong>Address:</strong> %s</li>
-                            <li><strong>Blood Group:</strong> %s</li>
-                        </ul>
-                        <p>If this wasn't you, contact admin!</p>
-                    </body>
-                </html>
-            """,
-                student.getEnrollmentNo(), student.getCourse(), student.getBatch(), student.getRollNo(),
-                student.getEmail(), student.getContact(), student.getFatherName(),
-                student.getParentContact(), student.getAddress(), student.getBloodGroup());
-
-            helper.setText(html, true);
-            mailSender.send(message);
-            logger.info("✉️ Student edit confirmation sent to: " + student.getEmail());
-        } catch (MessagingException | MailException e) {
-            logger.severe("❌ Error sending edit confirmation: " + e.getMessage());
+            logger.severe("❌ Failed to send student confirmation email: " + e.getMessage());
         }
     }
 
@@ -269,8 +227,8 @@ public class EmailService {
     }
 
     // ✅ Token Utility
-    public String generateToken(String enrollmentNo, String email) {
-        String combined = enrollmentNo + ":" + email;
+    public String generateToken(Long long1, String email) {
+        String combined = long1 + ":" + email;
         return Base64.getUrlEncoder().encodeToString(combined.getBytes(StandardCharsets.UTF_8));
     }
 

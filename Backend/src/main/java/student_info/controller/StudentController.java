@@ -8,6 +8,7 @@ import student_info.service.EmailService;
 import student_info.service.StudentService;
 import student_info.specification.StudentSpecification;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,10 +40,9 @@ public class StudentController {
 
     @PostMapping("/register")
     public ResponseEntity<?> submitStudent(@Valid @RequestBody Student student) {
-    	System.out.println(student.getName());
-    	System.out.println(student.getImage());
-        try {
+    	        try {
             Student saved = studentService.submitStudent(student);
+            System.out.println(saved);
             emailService.sendStudentConfirmationEmail(saved);
             return ResponseEntity.ok(saved);
         } catch (RuntimeException ex) {
@@ -66,27 +67,90 @@ public class StudentController {
         return ResponseEntity.ok(studentPage);
     }
     
-    @PutMapping("/edit/{token}")
-    public ResponseEntity<?> editStudent(@PathVariable String token, @Valid @RequestBody Student student) {
+    @GetMapping("/editstudent/{token}")
+    public ResponseEntity<?> getStudentForEdit(@PathVariable String token) {
         String[] decoded = emailService.decodeToken(token);
-        if (decoded == null || !student.getEnrollmentNo().equals(decoded[0]) || !student.getEmail().equals(decoded[1])) {
-            return ResponseEntity.status(403).body("Invalid or mismatched token.");
-        }
-        try {
-            Optional<Student> existing = studentService.findByEnrollmentNoAndEmail(decoded[0], decoded[1]);
-            if (existing.isEmpty()) {
-                return ResponseEntity.status(404).body("Student not found.");
-            }
-            student.setId(existing.get().getId());
-            Student updated = studentService.updateStudent(student);
-            emailService.sendStudentEditConfirmationEmail(updated);
+        System.out.println("🧩 Decoded Token: " + Arrays.toString(decoded));
 
-            return ResponseEntity.ok(updated);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
+        if (decoded == null || decoded.length != 2) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token.");
+        }
+
+        try {
+            Long studentId = Long.parseLong(decoded[0]);
+            String email = decoded[1];
+
+            Optional<Student> optional = studentrepository.findById(studentId);
+            if (optional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found.");
+            }
+
+            Student student = optional.get();
+            if (!student.getEmail().equals(email)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email mismatch.");
+            }
+
+            return ResponseEntity.ok(student);
+
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Malformed student ID in token.");
         }
     }
+    
+    
+    @PutMapping("/editstudent/{token}")
+    public ResponseEntity<?> editStudent(@PathVariable String token, @RequestBody Student incomingStudent) {
+    	System.out.println("update student") ;
+    	String[] decoded = emailService.decodeToken(token);
+        if (decoded == null || decoded.length != 2) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid or corrupted token.");
+        }
 
+        try {
+            Long studentId = Long.parseLong(decoded[0]);
+            String email = decoded[1];
+
+            Optional<Student> optional = studentrepository.findById(studentId);
+            if (optional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found.");
+            }
+
+            Student existing = optional.get();
+
+            if (!existing.getEmail().equals(email)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email mismatch.");
+            }
+
+            // ✅ Safely update only editable fields
+            existing.setName(incomingStudent.getName());
+            existing.setCourse(incomingStudent.getCourse());
+            existing.setBatch(incomingStudent.getBatch());
+            existing.setContact(incomingStudent.getContact());
+            existing.setFatherName(incomingStudent.getFatherName());
+            existing.setParentContact(incomingStudent.getParentContact());
+            existing.setAddress(incomingStudent.getAddress());
+            existing.setBloodGroup(incomingStudent.getBloodGroup());
+            existing.setDob(incomingStudent.getDob());
+            existing.setGender(incomingStudent.getGender());
+            existing.setImage(incomingStudent.getImage());
+            existing.setAadharImage(incomingStudent.getAadharImage());
+            existing.setAdmissionSlip(incomingStudent.getAdmissionSlip());
+            existing.setEnrollmentNo(incomingStudent.getEnrollmentNo());
+            existing.setRollNo(incomingStudent.getRollNo());
+            existing.setCuetno(incomingStudent.getCuetno());
+            existing.setEmail(incomingStudent.getEmail());
+
+            Student updated = studentrepository.save(existing);
+                System.out.println(updated);
+            // ✅ Optional: send updated confirmation mail
+            emailService.sendStudentConfirmationEmail(updated); // ✅ Reusing same email method is fine now
+
+            return ResponseEntity.ok(updated);
+
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Malformed student ID.");
+        }
+    }
     @PreAuthorize("hasAnyRole('PI', 'BATCH_MENTOR')")
     @GetMapping("/search")
     public ResponseEntity<List<Student>> searchStudents(@RequestParam String query) {

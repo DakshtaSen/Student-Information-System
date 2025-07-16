@@ -34,11 +34,9 @@ public class AdminService {
         if (adminRepository.existsByAdminEmail(request.getAdminEmail())) {
             return "Email already in use.";
         }
-
         if (!request.getAdminPassword().equals(request.getConfirmPassword())) {
             return "Passwords do not match.";
         }
-
         Admin admin = new Admin();
         admin.setAdminName(request.getAdminName());
         admin.setAdminEmail(request.getAdminEmail());
@@ -46,17 +44,13 @@ public class AdminService {
         admin.setAdminMobileNo(request.getAdminMobileNo());
         admin.setCourse(request.getCourse());
         admin.setAdminRole(request.getAdminRole());
-
-        if ("BATCH_MENTOR".equalsIgnoreCase(request.getAdminRole())) {
+        if ("BATCHMENTOR".equalsIgnoreCase(request.getAdminRole())) {
             admin.setBatch(request.getBatch());
         } else {
             admin.setBatch(null);
         }
-
         admin.setApproved(false);
-
         Admin savedAdmin = adminRepository.save(admin);
-
         emailService.sendAdminSignUpNotification(
                 savedAdmin.getAdminName(),
                 savedAdmin.getAdminEmail(),
