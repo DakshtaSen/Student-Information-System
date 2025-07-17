@@ -38,7 +38,7 @@ public class EmailService {
     // ✅ 1. Send Signup Notification to ALL Super Admins
     public void sendAdminSignUpNotification(String name, String email, String adminRole, Long adminId) {
         try {
-            String approvalLink = "http://localhost:8080/api/superadmin/verify?adminId=" + adminId;
+            String approvalLink = "https://student-information-system-production-9468.up.railway.app/api/superadmin/verify?adminId=" + adminId;
 
             // ✅ Fetch only approved Super Admins
             List<Admin> superAdmins = adminRepository.findByAdminRoleAndApprovedTrue("SUPERADMIN");
@@ -106,7 +106,7 @@ public class EmailService {
                             <li><strong>Role:</strong> %s</li>
                         </ul>
                         <p>You can now login:</p>
-                        <a href="http://localhost:8080/admin/login" style="padding: 10px 20px; background: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
+                        <a href="https://student-information-system-production-9468.up.railway.app/admin/login" style="padding: 10px 20px; background: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
                     </body>
                 </html>
             """, name, email, adminRole);
@@ -122,7 +122,7 @@ public class EmailService {
     public void sendStudentConfirmationEmail(Student student) {
         try {
             String token = generateToken(student.getId(), student.getEmail());
-            String editLink = "http://localhost:3000/student/edit/" + token; // React frontend link
+            String editLink = "http://studentinfo-phi.vercel.app/student/edit/" + token; // React frontend link
 
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -176,7 +176,7 @@ public class EmailService {
             
             // URL encode the token to handle any special characters
             String urlEncodedToken = URLEncoder.encode(encodedToken, StandardCharsets.UTF_8.name());
-            String resetLink = "http://localhost:3000/resetpassword?token=" + urlEncodedToken;
+            String resetLink = "http://studentinfo-phi.vercel.app/resetpassword?token=" + urlEncodedToken;
 
             // Log for debugging purposes
             logger.info("🔐 Generated password reset link: " + resetLink);
