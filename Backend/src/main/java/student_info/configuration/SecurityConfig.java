@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,8 +32,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable) // Updated for Spring Security 6.x
-                .cors(cors -> cors.configure(http)) // Explicitly enable CORS
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults()) // ✅ Correct CORS config
                 .exceptionHandling(exception -> 
                     exception.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
                 .authorizeHttpRequests(auth -> auth
@@ -42,7 +43,7 @@ public class SecurityConfig {
                                 "/api/student/register",
                                 "/api/admin/forgotpassword",
                                 "/api/admin/resetpassword",
-                                "/api/student/editstudent/",
+                                "/api/student/editstudent/**", 
                                 "/error"
                         ).permitAll()
                         .requestMatchers("/api/superadmin/summary").hasRole("SUPERADMIN")

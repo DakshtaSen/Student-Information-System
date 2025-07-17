@@ -36,18 +36,6 @@ public class AdminController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> registerAdmin(@Valid @RequestBody SignUpRequest request) {
-    	System.out.println("===== Signup Request Received =====");
-    	System.out.println("Name: " + request.getAdminName());
-    	System.out.println("Email: " + request.getAdminEmail());
-    	System.out.println("Password: " + request.getAdminPassword());
-    	System.out.println("Confirm Password: " + request.getConfirmPassword());
-    	System.out.println("Mobile No: " + request.getAdminMobileNo());
-    	System.out.println("Role: " + request.getAdminRole());
-    	System.out.println("Batch: " + request.getBatch());
-    	System.out.println("Course: " + request.getCourse());
-    	System.out.println("===================================");
-    	
-    	
         String response = adminService.registerAdmin(request);
     	System.out.println("response "+response);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
