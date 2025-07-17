@@ -38,18 +38,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+
+                // ✅ Use the corsConfigurationSource bean
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .exceptionHandling(exception -> 
-                    exception.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
+
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/admin/signup",
-                                "/api/admin/login",
-                                "/api/student/register",
-                                "/api/admin/forgotpassword",
-                                "/api/admin/resetpassword",
-                                "/api/student/editstudent/**", 
-                                "/error"
+                            "/api/admin/signup",
+                            "/api/admin/login",
+                            "/api/admin/forgotpassword",
+                            "/api/admin/resetpassword",
+                            "/api/student/register",
+                            "/error"
                         ).permitAll()
                         .requestMatchers("/api/superadmin/summary").hasRole("SUPERADMIN")
                         .anyRequest().authenticated()
