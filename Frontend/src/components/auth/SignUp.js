@@ -544,6 +544,7 @@ import ClassIcon from '@mui/icons-material/Class';
 import GroupsIcon from '@mui/icons-material/Groups';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+const baseURL = "https://student-information-system-production-9468.up.railway.app";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -565,6 +566,7 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -615,16 +617,17 @@ const SignUp = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        'https://student-information-system-production-9468.up.railway.app/api/admin/signup',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        }
-      );
+const response = await axios.post(
+  `${baseURL}/api/admin/signup`,
+  formData,
+  {
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+  }
+);
+
 
       if (response.status === 200 || response.status === 201) {
         alert('Registration successful! Awaiting approval.');
