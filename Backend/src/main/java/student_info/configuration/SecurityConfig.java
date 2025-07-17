@@ -4,14 +4,11 @@ import lombok.RequiredArgsConstructor;
 import student_info.service.CustomUserDetailsService;
 import student_info.util.JwtFilter;
 
-import java.util.List;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,10 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -33,24 +28,22 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final CustomUserDetailsService userDetailsService;
+    private final CorsConfigurationSource corsConfigurationSource; // ✅ Injected
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-
-                // ✅ Use the corsConfigurationSource bean
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
+                .cors(cors -> cors.configurationSource(corsConfigurationSource)) // ✅ Use injected bean
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                            "/api/admin/signup",
-                            "/api/admin/login",
-                            "/api/admin/forgotpassword",
-                            "/api/admin/resetpassword",
-                            "/api/student/register",
-                            "/error"
+                                "/api/admin/signup",
+                                "/api/admin/login",
+                                "/api/admin/forgotpassword",
+                                "/api/admin/resetpassword",
+                                "/api/student/register",
+                                "/error"
                         ).permitAll()
                         .requestMatchers("/api/superadmin/summary").hasRole("SUPERADMIN")
                         .anyRequest().authenticated()
@@ -78,9 +71,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        return new CorsConfig().corsConfigurationSource();
-    }
-
 }

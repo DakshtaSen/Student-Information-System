@@ -14,10 +14,11 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        
-        // ✅ Allow the frontend domain
+
+        // ✅ Allow both Vercel domain and localhost for development
         config.setAllowedOriginPatterns(List.of(
-            "https://studentinfo-phi.vercel.app"
+                "https://studentinfo-phi.vercel.app",
+                "http://localhost:3000"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
