@@ -15,7 +15,8 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                 .allowedOriginPatterns(
-                        "http://localhost:3000"
+                        "http://localhost:3000",
+                        "http://studentinfo-phi.vercel.app"
                     )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                         .allowedHeaders("*")
