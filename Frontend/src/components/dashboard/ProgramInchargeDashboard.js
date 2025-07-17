@@ -9,7 +9,7 @@ import { TablePagination } from "@mui/material";
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api/student';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://student-information-system-production-9468.up.railway.app/api/student';
 
 const ProgramInchargeDashboard = () => {
   const filterRef = useRef(null);
@@ -144,6 +144,9 @@ const ProgramInchargeDashboard = () => {
       "Batch": student.batch,
       "Father's Name": student.fatherName,
       "Parent's Contact": student.parentContact,
+      "Admission Slip": student.admissionSlip,
+      "Aadhar Image": student.aadharImage,
+      "CUET No": student.cuetno,
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(excelData);
@@ -322,6 +325,9 @@ const ProgramInchargeDashboard = () => {
                     <th>Batch</th>
                     <th>Father's Name</th>
                     <th>Parent's Contact</th>
+                    <th>Admission Slip</th>
+                    <th>Aadhar Image</th>
+                    <th>CUET No</th>
                     <th>Image</th>
                   </tr>
                 </thead>
@@ -343,6 +349,21 @@ const ProgramInchargeDashboard = () => {
                         <td>{student.batch}</td>
                         <td>{student.fatherName}</td>
                         <td>{student.parentContact}</td>
+                        <td>
+                          {student.admissionSlip ? (
+                            <a href={student.admissionSlip} target="_blank" rel="noopener noreferrer">View</a>
+                          ) : (
+                            "N/A"
+                          )}
+                        </td>
+                        <td>
+                          {student.aadharImage ? (
+                            <a href={student.aadharImage} target="_blank" rel="noopener noreferrer">View</a>
+                          ) : (
+                            "N/A"
+                          )}
+                        </td>
+                        <td>{student.cuetno || "N/A"}</td>
                         <td>
                           {student.image ? (
                             <img
@@ -393,3 +414,4 @@ const ProgramInchargeDashboard = () => {
 };
 
 export default ProgramInchargeDashboard;
+
