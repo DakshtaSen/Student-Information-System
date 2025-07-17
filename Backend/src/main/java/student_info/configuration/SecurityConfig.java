@@ -82,7 +82,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOriginPatterns(List.of(
             "http://localhost:3000",
-            "https://studentinfo-phi.vercel.app"  // ✅ Your frontend
+            "https://studentinfo-phi.vercel.app",  // ✅ Your frontend
+            "*"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
