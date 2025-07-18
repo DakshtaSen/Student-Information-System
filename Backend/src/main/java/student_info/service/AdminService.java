@@ -178,7 +178,7 @@ public class AdminService {
 
         Admin admin = optionalAdmin.get();
         String token = Base64.getEncoder().encodeToString(admin.getAdminEmail().getBytes());
-        String resetLink = "http://localhost:3000/reset-password?token=" + token;
+        String resetLink = "http://studentinfo-phi.vercel.app/reset-password?token=" + token;
 
         emailService.sendHtmlMessage(
             admin.getAdminEmail(),

@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -27,22 +28,21 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final CustomUserDetailsService userDetailsService;
+    private final CorsConfigurationSource corsConfigurationSource; // ✅ Injected
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable) // Updated for Spring Security 6.x
-                .cors(cors -> cors.configure(http)) // Explicitly enable CORS
-                .exceptionHandling(exception -> 
-                    exception.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource)) // ✅ Use injected bean
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/admin/signup",
                                 "/api/admin/login",
-                                "/api/student/register",
                                 "/api/admin/forgotpassword",
                                 "/api/admin/resetpassword",
-                                "/api/student/editstudent/",
+                                "/api/student/register",
                                 "/error"
                         ).permitAll()
                         .requestMatchers("/api/superadmin/summary").hasRole("SUPERADMIN")
