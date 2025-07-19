@@ -75,7 +75,7 @@ const developers = [
     bio: 'Loves designing robust APIs and scalable backend systems with Java and Spring Boot.'
   },
   {
-    name: 'Ronak',
+    name: 'Ronak Yadav',
     role: 'Bakend Developer',
     img: Ronakimg,
     

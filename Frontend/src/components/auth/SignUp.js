@@ -566,7 +566,7 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -617,16 +617,16 @@ const SignUp = () => {
 
     setIsLoading(true);
     try {
-const response = await axios.post(
-  `${baseURL}/api/admin/signup`,
-  formData,
-  {
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-  }
-);
+      const response = await axios.post(
+        `${baseURL}/api/admin/signup`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        }
+      );
 
 
       if (response.status === 200 || response.status === 201) {
@@ -774,8 +774,13 @@ const response = await axios.post(
                   <FormControl fullWidth error={!!errors.batch}>
                     <InputLabel>Batch</InputLabel>
                     <Select name="batch" value={formData.batch} label="Batch" onChange={handleChange} required>
+                      <MenuItem value="2026">2026</MenuItem>
+                      <MenuItem value="2025">2025</MenuItem>
                       <MenuItem value="2024">2024</MenuItem>
                       <MenuItem value="2023">2023</MenuItem>
+                      <MenuItem value="2022">2022</MenuItem>
+                      <MenuItem value="2021">2021</MenuItem>
+                      <MenuItem value="2020">2020</MenuItem>
                     </Select>
                     {errors.batch && <Typography variant="caption" color="error">{errors.batch}</Typography>}
                   </FormControl>
