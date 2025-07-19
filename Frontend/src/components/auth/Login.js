@@ -846,7 +846,81 @@ const Login = () => {
     return newErrors;
   };
 
-  const handleSubmit = async (e) => {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const validationErrors = validateForm();
+  //   if (Object.keys(validationErrors).length > 0) {
+  //     setErrors(validationErrors);
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+  //   setErrors({});
+
+  //   try {
+  //     const response = await axios.post(
+  //       'https://student-information-system-production-9468.up.railway.app/api/admin/login',
+  //       {
+  //         adminEmail: formData.adminEmail,
+  //         adminPassword: formData.adminPassword,
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         withCredentials: true,
+  //       }
+  //     );
+
+  //     const data = response.data;
+
+  //     if (response.status === 200 && data.token) {
+  //       localStorage.setItem('token', data.token);
+  //       localStorage.setItem('userRole', data.adminRole || 'ADMIN');
+  //       localStorage.setItem('userName', data.adminName || 'Admin');
+
+  //       switch ((data.adminRole || '').toUpperCase()) {
+  //         case 'SUPERADMIN':
+  //           navigate('/superadmin-dashboard');
+  //           break;
+  //         case 'PI':
+  //           navigate('/pi-dashboard');
+  //           break;
+  //         case 'BATCHMENTOR':
+  //           navigate('/bm-dashboard');
+  //           break;
+  //         default:
+  //           navigate('/dashboard');
+  //       }
+  //     } else {
+  //       setErrors({ general: 'Unexpected login response. Please try again.' });
+  //     }
+
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+
+  //     if (error.response) {
+  //       const status = error.response.status;
+  //       const message = error.response?.data || 'Login failed.';
+  //       if (status === 403 || status === 401 || status === 404) {
+  //         setErrors({ general: message });
+  //       } else if (status === 423) {
+  //         setErrors({ general: "Account locked. Try again later." });
+  //       } else {
+  //         setErrors({ general: "Something went wrong. Try again later." });
+  //       }
+  //     } else if (error.code === 'ECONNABORTED') {
+  //       setErrors({ general: "Request timed out. Server may be down." });
+  //     } else {
+  //       setErrors({ general: "Network error. Please check your connection." });
+  //     }
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+
+   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
@@ -896,12 +970,16 @@ const Login = () => {
         setErrors({ general: 'Unexpected login response. Please try again.' });
       }
 
-    } catch (error) {
-      console.error("Login error:", error);
+      } catch (error) {
+      console.error("Login error:", error.message);
 
       if (error.response) {
         const status = error.response.status;
-        const message = error.response?.data || 'Login failed.';
+        const errorData = error.response.data;
+        const message = typeof errorData === 'string' 
+          ? errorData 
+          : errorData?.error || 'Login failed.';
+
         if (status === 403 || status === 401 || status === 404) {
           setErrors({ general: message });
         } else if (status === 423) {
@@ -914,6 +992,7 @@ const Login = () => {
       } else {
         setErrors({ general: "Network error. Please check your connection." });
       }
+    
     } finally {
       setIsLoading(false);
     }

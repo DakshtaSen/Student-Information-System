@@ -92,13 +92,13 @@
 
 //       // Log the payload being sent
 //       console.log('Payload being sent to backend:', payload);
-//       console.log('Mode:', isEditMode ? 'Edit Mode' : 'Registration Mode');
+    //  console.log('Mode:', isEditMode ? 'Edit Mode' : 'Registration Mode');
 
 //       const url = isEditMode
 //         ? `http://localhost:8080/api/student/update?token=${token}`
 //         : `http://localhost:8080/api/student/register`;
 //         // : `https://jsonplaceholder.typicode.com/posts`;
-         
+
 
 //       const method = isEditMode ? 'put' : 'post';
 
@@ -116,16 +116,16 @@
 //       }
 //     } catch (err) {
 //       console.error('Error details:', err);
-      
+
 //       if (err.response) {
 //         // Server responded with error status
 //         const status = err.response.status;
 //         const data = err.response.data;
-        
+
 //         console.log('Error response:', { status, data });
-        
+
 //         let errorMessage = 'An error occurred. Please try again.';
-        
+
 //         if (status === 400) {
 //           errorMessage = data?.message || data?.error || 'Invalid data provided. Please check your information.';
 //         } else if (status === 401) {
@@ -157,7 +157,7 @@
 //             errorMessage = data?.error || `Server error (${status}). Please try again.`;
 //           }
 //         }
-        
+
 //         alert(errorMessage);
 //       } else if (err.request) {
 //         // Network error - no response received
@@ -228,7 +228,7 @@
 //                     <div className="form-group" key={field}>
 //                       <label>{label}</label>
 //                       {['gender', 'bloodGroup'].includes(field) ? (
-    
+
 //                         <Field as="select" name={field} disabled={isEditMode && field !== 'name'} className="form-input">
 
 //                           <option value="">Select</option>
@@ -436,7 +436,9 @@ const Studentsignup = () => {
         aadharImage: aadharUrl,
         admissionSlip: slipUrl,
       };
-
+      // Log the payload being sent
+      console.log('Payload being sent to backend:', payload);
+      console.log('Mode:', isEditMode ? 'Edit Mode' : 'Registration Mode');
       const url = isEditMode
         ? `https://student-information-system-production-9468.up.railway.app/api/student/editstudent/${token}`
         : 'https://student-information-system-production-9468.up.railway.app/api/student/register';
@@ -462,16 +464,30 @@ const Studentsignup = () => {
           setFormKey(k => k + 1);
         }
       }
-    } 
+    }
+    // catch (err) {
+    //     console.error("Submit Error:", err);
+    //     if (err.response?.data?.message) {
+    //       alert(err.response.data.message); // Or use setFormError() to show nicely
+    //     } else {
+    //       alert("Unexpected error occurred.");
+    //     }
+    //   }
+
     catch (err) {
-        console.error("Submit Error:", err);
-        if (err.response?.data?.message) {
-          alert(err.response.data.message); // Or use setFormError() to show nicely
-        } else {
-          alert("Unexpected error occurred.");
-        }
-      }
-          
+      console.error("Submit Error:", err);
+
+      // Try to extract the message from various possible locations
+      let message =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        (typeof err.response?.data === "string" ? err.response.data : null) ||
+        err.message ||
+        "Unexpected error occurred.";
+
+      alert(message);
+    }
+
     finally {
       setSubmitting(false);
     }
@@ -571,7 +587,7 @@ const Studentsignup = () => {
                       <ErrorMessage name={field} component="div" className="error-message" />
                     </div>
                   ))}
-                </div> 
+                </div>
                 {/* <div className="form-grid">
                   {[
                     ['rollNo', 'Roll Number*'],
