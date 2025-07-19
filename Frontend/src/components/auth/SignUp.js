@@ -143,7 +143,7 @@
 //   } catch (error) {
 //     console.error('Registration error:', error);
 //     console.error('Full error response:', error.response);
-    
+
 //     const errorMsg =
 //       error.response?.data?.message?.toLowerCase() ||
 //       error.response?.data?.error?.toLowerCase() ||
@@ -752,10 +752,17 @@ const response = await axios.post(
                   <FormControl fullWidth error={!!errors.course}>
                     <InputLabel>Course</InputLabel>
                     <Select name="course" value={formData.course} label="Course" onChange={handleChange} required>
+                      <MenuItem value="MCA-5yrs">MCA-5yrs</MenuItem>
                       <MenuItem value="MTech (IT)-5yrs">MTech (IT)-5yrs</MenuItem>
+                      <MenuItem value="MTech (CS)-5yrs">MTech (CS)-5yrs</MenuItem>
                       <MenuItem value="MBA (MS)-5yrs">MBA (MS)-5yrs</MenuItem>
+                      <MenuItem value="MBA (MS)-2yrs">MBA (MS)-2yrs</MenuItem>
+                      <MenuItem value="MBA (T)-5yrs">MBA (T)-5yrs</MenuItem>
                       <MenuItem value="MBA (Eship)">MBA (Eship)</MenuItem>
+                      <MenuItem value="MBA (APR)">MBA (APR)</MenuItem>
+                      <MenuItem value="Bcom (Hons.)">Bcom (HOns.)</MenuItem>
                       <MenuItem value="Phd (Computer)">Phd (Computer)</MenuItem>
+                      <MenuItem value="Phd (Management)">Pdh (Management)</MenuItem>
                     </Select>
                     {errors.course && <Typography variant="caption" color="error">{errors.course}</Typography>}
                   </FormControl>
@@ -789,14 +796,14 @@ const response = await axios.post(
             <Box sx={{ textAlign: 'center', mt: 2 }}>
               <Typography variant="body2">
                 Already have an account?{' '}
-                <Button onClick={() => navigate('/login')}  sx={{
-                        textTransform: 'none',
-                        color: 'white',
-                        background: 'linear-gradient(38deg, #2a5298 99%, #3e3337 51%)',
-                        '&:hover': {
-                          background: 'linear-gradient(45deg, rgb(64 84 125) 103%, rgb(19 13 15) 90%)'
-                        }
-                      }}>
+                <Button onClick={() => navigate('/login')} sx={{
+                  textTransform: 'none',
+                  color: 'white',
+                  background: 'linear-gradient(38deg, #2a5298 99%, #3e3337 51%)',
+                  '&:hover': {
+                    background: 'linear-gradient(45deg, rgb(64 84 125) 103%, rgb(19 13 15) 90%)'
+                  }
+                }}>
                   Login
                 </Button>
               </Typography>
