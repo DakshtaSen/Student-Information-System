@@ -64,7 +64,6 @@ const developers = [
   {
     name: 'Kushagra Singh Bias',
     role: 'Frontend Developer',
-    // img: 'https://randomuser.me/api/portraits/men/32.jpg',
     img:Kushagraimg,
     bio: 'Passionate about building beautiful and performant UIs with React and Material-UI.'
   },
@@ -72,38 +71,37 @@ const developers = [
     name: 'Lakshya Bagora',
     role: 'Backend Developer',
     img: Lakshyaimg,
-    bio: 'Loves designing robust APIs and scalable backend systems with Java and Spring Boot.'
+    bio: 'Designs efficient APIs and ensures the backend runs smoothly.'
   },
   {
     name: 'Ronak Yadav',
     role: 'Bakend Developer',
     img: Ronakimg,
-    
-    bio: 'Enjoys working across the stack and bringing ideas to life from database to UI.'
+    bio: 'Bridges the gap between databases and user experience with reliable code.'
   },
   {
     name: 'Paridhi Patidar',
     role: 'Backend Developer',
     img: Paridhiimg,
-    bio: 'Designs intuitive and delightful user experiences for web and mobile apps.'
+    bio: 'Focuses on secure data management and seamless server operations.'
   },
   {
     name: 'Sidharth Valecha',
     role: 'Backend Developer',
     img: Sidharthimg,
-    bio: 'Automates deployments and ensures smooth CI/CD pipelines for the team.'
+    bio: 'Implements scalable solutions and optimizes backend performance.'
   },
   {
     name: 'Rimzim Soni',
     role: 'Frontend Developer',
     img: Rimzimimg,
-    bio: 'Ensures the highest quality by testing and breaking things before users do.'
+    bio: 'Transforms creative ideas into interactive and accessible web pages.'
   },
   {
     name: 'Dakshta Sen',
     role: 'Frontend Developer',
     img: Dakshtaimg,
-    bio: 'Keeps the team on track and ensures timely delivery of awesome products.'
+    bio: 'Delivers pixel-perfect designs and smooth user journeys.'
   }
 ];
 
