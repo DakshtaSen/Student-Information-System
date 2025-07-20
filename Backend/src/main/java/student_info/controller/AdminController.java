@@ -36,9 +36,16 @@ public class AdminController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> registerAdmin(@Valid @RequestBody SignUpRequest request) {
+        System.out.println("admin data:");
+
         String response = adminService.registerAdmin(request);
-    	System.out.println("response "+response);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        System.out.println(response);
+
+        if ("Email already in use.".equals(response)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response); // 409 Conflict
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201 Created
     }
 
     @PostMapping("/login")
