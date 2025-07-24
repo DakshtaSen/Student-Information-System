@@ -77,13 +77,13 @@ const developers = [
     name: 'Ronak Yadav',
     role: 'Bakend Developer',
     img: Ronakimg,
-    bio: 'Bridges the gap between databases and user experience with reliable code.'
+    bio: 'Turning complex logic into seamless experiences—one API at a time.'
   },
   {
     name: 'Paridhi Patidar',
     role: 'Backend Developer',
     img: Paridhiimg,
-    bio: 'Focuses on secure data management and seamless server operations.'
+    bio: 'Focuses on building secure APIs, managing data efficiently, and ensuring smooth backend operations.'
   },
   {
     name: 'Sidharth Valecha',

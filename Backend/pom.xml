@@ -23,7 +23,6 @@
     <lombok.version>1.18.30</lombok.version>
 </properties>
 
-
     <dependencies>
         <!-- Spring Boot Starters -->
         <dependency>

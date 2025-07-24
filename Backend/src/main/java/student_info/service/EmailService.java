@@ -122,7 +122,9 @@ public class EmailService {
     public void sendStudentConfirmationEmail(Student student) {
         try {
             String token = generateToken(student.getId(), student.getEmail());
-            String editLink = "http://studentinfo-phi.vercel.app/student/edit/" + token; // React frontend link
+
+            String editLink = "https://student-information-system-zeta.vercel.app/student/edit/" + token; // React frontend link
+
 
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -167,6 +169,8 @@ public class EmailService {
         }
     }
 
+
+
     public void sendPasswordResetEmail(Admin admin) {
         try {
             // Use URL-safe Base64 encoding and proper charset
@@ -176,7 +180,10 @@ public class EmailService {
             
             // URL encode the token to handle any special characters
             String urlEncodedToken = URLEncoder.encode(encodedToken, StandardCharsets.UTF_8.name());
-            String resetLink = "http://studentinfo-phi.vercel.app/resetpassword?token=" + urlEncodedToken;
+
+          
+            String resetLink = "https://student-information-system-zeta.vercel.app/resetpassword?token=" + urlEncodedToken;
+
 
             // Log for debugging purposes
             logger.info(" Generated password reset link: " + resetLink);
@@ -186,7 +193,7 @@ public class EmailService {
             logger.severe(" Failed to prepare password reset email: " + e.getMessage());
         }
     }
-
+                                        
     public void sendHtmlMessage(String to, String subject, String resetLink) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -220,15 +227,16 @@ public class EmailService {
 
             helper.setText(html, true);
             mailSender.send(message);
-            logger.info(" Password reset email successfully sent to: " + to);
+            logger.info("✅ Password reset email successfully sent to: " + to);
         } catch (MessagingException e) {
-            logger.severe(" Failed to send reset email to: " + to + " - Error: " + e.getMessage());
+            logger.severe("❌ Failed to send reset email to: " + to + " - Error: " + e.getMessage());
         }
     }
-
+    // Token Utility Methods
+    public String generateToken(Long StudentId, String email) {
+        String combined = StudentId + ":" + email;
     // ✅ Token Utility
-    public String generateToken(Long long1, String email) {
-        String combined = long1 + ":" + email;
+    
         return Base64.getUrlEncoder().encodeToString(combined.getBytes(StandardCharsets.UTF_8));
     }
 
