@@ -43,9 +43,7 @@ public class SecurityConfig {
                                 "/api/admin/signup",
                                 "/api/admin/login",
                                 "/api/student/register",
-//                                "/api/student/edit/**",
-//                                "/api/student/filter",
-//                                "/api/student/search",
+                                "/api/student/editstudent/**",
                                 "/api/admin/forgotpassword",
                                 "/error"
                         ).permitAll()

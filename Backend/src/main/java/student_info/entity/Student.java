@@ -32,13 +32,14 @@ public class Student {
     @Column(name = "image")
     private String image;
 
-
+    private String admissionSlip;
+    private String aadharImage;
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
- 
+
     private String gender;
-    
+    private String cuetno;
     private Date dob;
     
     @NotBlank(message = "Course is required")
