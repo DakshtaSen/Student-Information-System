@@ -12,5 +12,4 @@ import jakarta.validation.constraints.*; // Correct package for Spring Boot 3+
 public class LoginRequest {
     private String adminEmail;
     private String adminPassword;
-    // Getters and setters
 }

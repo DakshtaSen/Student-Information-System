@@ -34,11 +34,9 @@ public class AdminService {
         if (adminRepository.existsByAdminEmail(request.getAdminEmail())) {
             return "Email already in use.";
         }
-
         if (!request.getAdminPassword().equals(request.getConfirmPassword())) {
             return "Passwords do not match.";
         }
-
         Admin admin = new Admin();
         admin.setAdminName(request.getAdminName());
         admin.setAdminEmail(request.getAdminEmail());
@@ -46,17 +44,13 @@ public class AdminService {
         admin.setAdminMobileNo(request.getAdminMobileNo());
         admin.setCourse(request.getCourse());
         admin.setAdminRole(request.getAdminRole());
-
-        if ("BATCH_MENTOR".equalsIgnoreCase(request.getAdminRole())) {
+        if ("BATCHMENTOR".equalsIgnoreCase(request.getAdminRole())) {
             admin.setBatch(request.getBatch());
         } else {
             admin.setBatch(null);
         }
-
         admin.setApproved(false);
-
         Admin savedAdmin = adminRepository.save(admin);
-
         emailService.sendAdminSignUpNotification(
                 savedAdmin.getAdminName(),
                 savedAdmin.getAdminEmail(),
@@ -135,7 +129,6 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
-    // ✅ SEARCH by name
     public List<AdminDTO> searchAdminsByName(String name) {
         List<String> roles = List.of("PI", "BatchMentor");
         return adminRepository.findByAdminNameContainingIgnoreCaseAndAdminRoleIn(name, roles)
@@ -185,7 +178,7 @@ public class AdminService {
 
         Admin admin = optionalAdmin.get();
         String token = Base64.getEncoder().encodeToString(admin.getAdminEmail().getBytes());
-        String resetLink = "http://localhost:3000/reset-password?token=" + token;
+        String resetLink = "http://studentinfo-phi.vercel.app/reset-password?token=" + token;
 
         emailService.sendHtmlMessage(
             admin.getAdminEmail(),

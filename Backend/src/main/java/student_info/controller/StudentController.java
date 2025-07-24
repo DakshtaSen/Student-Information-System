@@ -19,10 +19,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+<<<<<<< HEAD
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
+=======
+import java.util.Arrays;
+>>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,8 +49,13 @@ public class StudentController {
 
     @PostMapping("/register")
     public ResponseEntity<?> submitStudent(@Valid @RequestBody Student student) {
+<<<<<<< HEAD
         try {
+=======
+    	        try {
+>>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
             Student saved = studentService.submitStudent(student);
+            System.out.println(saved);
             emailService.sendStudentConfirmationEmail(saved);
             return ResponseEntity.ok(saved);
         } catch (DataIntegrityViolationException ex) {
@@ -74,19 +83,12 @@ public class StudentController {
 
         return ResponseEntity.ok(studentPage);
     }
-
-    // ✅ PUT update student
-//    @PutMapping("/updateStudent/{id}")
-//    public ResponseEntity<String> updateStudent(@PathVariable Long id,
-//                                                @RequestBody Student request) {
-////        String email = authentication.getName();  // logged-in admin's email
-//        String result = studentService.updateStudent(id, request);
-//        return ResponseEntity.ok(result);
-//    }
-
     
+<<<<<<< HEAD
     //student can update their info
     // ✅ 2. Prefill data using token
+=======
+>>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
     @GetMapping("/editstudent/{token}")
     public ResponseEntity<?> getStudentForEdit(@PathVariable String token) {
         String[] decoded = emailService.decodeToken(token);
@@ -114,6 +116,7 @@ public class StudentController {
 
         } catch (NumberFormatException e) {
             return ResponseEntity.badRequest().body("Malformed student ID in token.");
+<<<<<<< HEAD
         }
     }
     
@@ -173,6 +176,65 @@ public class StudentController {
     }
 
 //
+=======
+        }
+    }
+    
+    
+    @PutMapping("/editstudent/{token}")
+    public ResponseEntity<?> editStudent(@PathVariable String token, @RequestBody Student incomingStudent) {
+    	System.out.println("update student") ;
+    	String[] decoded = emailService.decodeToken(token);
+        if (decoded == null || decoded.length != 2) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid or corrupted token.");
+        }
+
+        try {
+            Long studentId = Long.parseLong(decoded[0]);
+            String email = decoded[1];
+
+            Optional<Student> optional = studentrepository.findById(studentId);
+            if (optional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found.");
+            }
+
+            Student existing = optional.get();
+
+            if (!existing.getEmail().equals(email)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email mismatch.");
+            }
+
+            // ✅ Safely update only editable fields
+            existing.setName(incomingStudent.getName());
+            existing.setCourse(incomingStudent.getCourse());
+            existing.setBatch(incomingStudent.getBatch());
+            existing.setContact(incomingStudent.getContact());
+            existing.setFatherName(incomingStudent.getFatherName());
+            existing.setParentContact(incomingStudent.getParentContact());
+            existing.setAddress(incomingStudent.getAddress());
+            existing.setBloodGroup(incomingStudent.getBloodGroup());
+            existing.setDob(incomingStudent.getDob());
+            existing.setGender(incomingStudent.getGender());
+            existing.setImage(incomingStudent.getImage());
+            existing.setAadharImage(incomingStudent.getAadharImage());
+            existing.setAdmissionSlip(incomingStudent.getAdmissionSlip());
+            existing.setEnrollmentNo(incomingStudent.getEnrollmentNo());
+            existing.setRollNo(incomingStudent.getRollNo());
+            existing.setCuetno(incomingStudent.getCuetno());
+            existing.setEmail(incomingStudent.getEmail());
+
+            Student updated = studentrepository.save(existing);
+                System.out.println(updated);
+            // ✅ Optional: send updated confirmation mail
+            emailService.sendStudentConfirmationEmail(updated); // ✅ Reusing same email method is fine now
+
+            return ResponseEntity.ok(updated);
+
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Malformed student ID.");
+        }
+    }
+>>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
     @PreAuthorize("hasAnyRole('PI', 'BATCH_MENTOR')")
     @GetMapping("/search")
     public ResponseEntity<List<Student>> searchStudents(@RequestParam String query) {
@@ -184,7 +246,7 @@ public class StudentController {
         return ResponseEntity.ok(results);
     }
 
-    // 🧩 Case 2 and 3: Course + Batch or Full Filter
+
     @PostMapping("/filter")
     public ResponseEntity<List<Student>> filterStudents(@RequestBody StudentFilterRequest filterRequest) {
         List<Student> results = studentrepository.findAll(
@@ -212,16 +274,6 @@ public class StudentController {
         Optional<Student> student = studentService.findById(id);
         return student.<ResponseEntity<?>>map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-    @PostMapping
-    @PreAuthorize("hasRole('BATCH_MENTOR')")
-    public ResponseEntity<?> createStudent(@Valid @RequestBody Student student) {
-        try {
-            Student saved = studentService.submitStudent(student);
-            return ResponseEntity.ok(saved);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
     }
 
     @PutMapping("/updateStudent/{id}")  //update student by bm

@@ -38,12 +38,13 @@ public class EmailService {
     // ✅ 1. Send Signup Notification to ALL Super Admins
     public void sendAdminSignUpNotification(String name, String email, String adminRole, Long adminId) {
         try {
-            String approvalLink = "http://localhost:8080/api/superadmin/verify?adminId=" + adminId;
+            String approvalLink = "https://student-information-system-production-9468.up.railway.app/api/superadmin/verify?adminId=" + adminId;
 
-            List<Admin> superAdmins = adminRepository.findByadminRole("SUPERADMIN");
+            // ✅ Fetch only approved Super Admins
+            List<Admin> superAdmins = adminRepository.findByAdminRoleAndApprovedTrue("SUPERADMIN");
 
             if (superAdmins.isEmpty()) {
-                logger.warning("⚠️ No super admins found in the database.");
+                logger.warning("⚠️ No approved super admins found in the database.");
                 return;
             }
 
@@ -78,7 +79,7 @@ public class EmailService {
             helper.setText(html, true);
             mailSender.send(message);
 
-            logger.info("✅ Email sent to all Super Admins.");
+            logger.info("✅ Email sent to all approved Super Admins.");
         } catch (MessagingException | MailException e) {
             logger.log(Level.SEVERE, "❌ Error sending Super Admin email: " + e.getMessage(), e);
         }
@@ -105,7 +106,7 @@ public class EmailService {
                             <li><strong>Role:</strong> %s</li>
                         </ul>
                         <p>You can now login:</p>
-                        <a href="http://localhost:8080/admin/login" style="padding: 10px 20px; background: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
+                        <a href="https://student-information-system-production-9468.up.railway.app/admin/login" style="padding: 10px 20px; background: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
                     </body>
                 </html>
             """, name, email, adminRole);
@@ -121,7 +122,11 @@ public class EmailService {
     public void sendStudentConfirmationEmail(Student student) {
         try {
             String token = generateToken(student.getId(), student.getEmail());
+<<<<<<< HEAD
             String editLink = "http://localhost:3000/student/edit/" + token; // React frontend link
+=======
+            String editLink = "http://studentinfo-phi.vercel.app/student/edit/" + token; // React frontend link
+>>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
 
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -165,6 +170,10 @@ public class EmailService {
             logger.severe("❌ Failed to send student confirmation email: " + e.getMessage());
         }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
     public void sendPasswordResetEmail(Admin admin) {
         try {
             // Use URL-safe Base64 encoding and proper charset
@@ -174,7 +183,11 @@ public class EmailService {
             
             // URL encode the token to handle any special characters
             String urlEncodedToken = URLEncoder.encode(encodedToken, StandardCharsets.UTF_8.name());
+<<<<<<< HEAD
             String resetLink = "http://localhost:3000/resetpassword?token=" + urlEncodedToken;
+=======
+            String resetLink = "http://studentinfo-phi.vercel.app/resetpassword?token=" + urlEncodedToken;
+>>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
 
             // Log for debugging purposes
             logger.info("🔐 Generated password reset link: " + resetLink);
@@ -207,9 +220,13 @@ public class EmailService {
                     + "</head>"
                     + "<body>"
                     + "<h2>Password Reset Request</h2>"
+<<<<<<< HEAD
                     + "<p>We received a request to reset your password. Click the button below to proceed:</p>"
                     + "<p><a href='" + resetLink + "' class='button' target='_blank'>Reset Password</a></p>"
                     + "<p>If the button doesn't work, copy and paste this link into your browser:</p>"
+=======
+                    + "<p>We received a request to reset your password. Click the button below link to proceed:</p>"
+>>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
                     + "<p><code>" + resetLink + "</code></p>"
                     + "<div class='footer'>"
                     + "<p>If you didn't request this password reset, please ignore this email.</p>"
@@ -226,9 +243,15 @@ public class EmailService {
         }
     }
 
+<<<<<<< HEAD
     // Token Utility Methods
     public String generateToken(Long StudentId, String email) {
         String combined = StudentId + ":" + email;
+=======
+    // ✅ Token Utility
+    public String generateToken(Long long1, String email) {
+        String combined = long1 + ":" + email;
+>>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
         return Base64.getUrlEncoder().encodeToString(combined.getBytes(StandardCharsets.UTF_8));
     }
 

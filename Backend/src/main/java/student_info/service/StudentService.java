@@ -2,6 +2,7 @@ package student_info.service;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,15 +22,26 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final AdminRepository  Adminrepo;
 
-    // Submit new student information
     public Student submitStudent(Student student) {
-        Optional<Student> existing = studentRepository.findByEnrollmentNoAndEmail(
-            student.getEnrollmentNo(), student.getEmail()
-        );
-        if (existing.isPresent()) {
-            throw new RuntimeException("Student with the given Enrollment No and Email already exists.");
+        try {
+        	  // Fix: Convert empty enrollment_no to null to avoid unique constraint violation
+            if (student.getEnrollmentNo() != null && student.getEnrollmentNo().trim().isEmpty()) {
+                student.setEnrollmentNo(null);
+            }
+            return studentRepository.save(student);
+        } catch (DataIntegrityViolationException ex) {
+            String message = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
+
+            if (message.contains("roll_no")) {
+                throw new RuntimeException("Roll Number already exists.");
+            } else if (message.contains("email")) {
+                throw new RuntimeException("Email already exists.");
+            } else if (message.contains("enrollment_no")) {
+                throw new RuntimeException("Enrollment number already exists.");
+            } else {
+                throw new RuntimeException("Duplicate data found.");
+            }
         }
-        return studentRepository.save(student);
     }
 
     // Update existing student data
@@ -141,7 +153,6 @@ public class StudentService {
                 throw new RuntimeException("Access Denied: You can only edit students from your batch and course.");
             }
         }
-
         student.setName(request.getName());
         student.setContact(request.getContact());
         student.setEmail(request.getEmail());
@@ -152,11 +163,5 @@ public class StudentService {
         studentRepository.save(student);
         return "Student updated successfully.";
     }
-
-    
-//	public List<Student> findByName(String name) {
-//	    return studentRepository.findByNameContainingIgnoreCase(name);
-//
-//	}
 }
 

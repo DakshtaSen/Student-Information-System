@@ -48,6 +48,7 @@ export const ColorModeContext = createContext({ toggleColorMode: () => { } });
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('token');
   const userRole = localStorage.getItem('userRole');
+  console.log('Checking access:', { userRole, allowedRoles });
 
   if (!token) {
     return <Navigate to="/login" replace />;
@@ -118,6 +119,11 @@ function App() {
       navigate(path);
     };
 
+    // Add handler for logo click
+    const handleLogoClick = () => {
+      navigate('/login');
+    };
+
     // Check if user is logged in
     const isLoggedIn = localStorage.getItem('token');
 
@@ -132,7 +138,7 @@ function App() {
           padding: '8px 16px'
         }}>
           {/* Left section with logo and college info */}
-          <Box sx={{
+          <Box  sx={{
             display: 'flex',
             alignItems: 'center',
             gap: 2
@@ -142,8 +148,11 @@ function App() {
               height: '60px',
               borderRadius: '10px',
               overflow: 'hidden',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
-            }}>
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+              cursor: 'pointer'
+            }}
+              onClick={handleLogoClick}
+            >
               <img
                 src="/images/iips_logo.png"
                 alt="IIPS Logo"
@@ -155,11 +164,12 @@ function App() {
               />
             </Box>
             <Box>
+              
               <Typography variant="h6" sx={{
                 fontWeight: 700,
                 letterSpacing: '0.5px',
                 color: '#fff'
-              }}>
+              }}  onClick={handleLogoClick}>
                 IIPS-DAVV INDORE
               </Typography>
               <Typography variant="caption" sx={{
@@ -178,6 +188,7 @@ function App() {
             alignItems: 'center',
             gap: 2
           }}>
+          
            <Button
               component={Link}
               to="/student-signup"
@@ -262,7 +273,9 @@ function App() {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/student-signup" element={<Studentsignup />} />
+                <Route path="/student/edit/:token" element={<Studentsignup isEditMode={true} />} />
                 <Route path="/developers" element={<MeetOurDeveloper />} />
+                
 
                 {/* Protected Routes */}
                 <Route

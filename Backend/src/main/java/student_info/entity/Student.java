@@ -7,8 +7,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Entity
-@Table(name = "students",
-       uniqueConstraints = {@UniqueConstraint(columnNames = {"enrollment_no", "email"})})
+@Table(name = "students")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,17 +19,13 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is required")
     private String name;
-
-    @NotBlank(message = "Enrollment No is required")
-    @Column(name = "enrollment_no")
+    
+    @Column(name = "enrollment_no", unique = true)
     private String enrollmentNo;
 
-//    @NotNull(message = "Image is required")
-
-    @Column(name = "image")
     private String image;
+<<<<<<< HEAD
 
     private String admissionSlip;
     private String aadharImage;
@@ -38,40 +33,41 @@ public class Student {
     @Email(message = "Invalid email format")
     private String email;
 
+=======
+ 
+>>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
     private String gender;
     private String cuetno;
     private Date dob;
     
-    @NotBlank(message = "Course is required")
     private String course;
 
-    @NotBlank(message = "Batch is required")
     private String batch;
 
-    @NotBlank(message = "Contact is required")
-    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Invalid contact number")
     private String contact;
 
-    @NotBlank(message = "Roll No is required")
-    @Column(name = "roll_no")
+    @Column(name = "roll_no", nullable = false, unique = true)
     private String rollNo;
 
-    @NotBlank(message = "Father's Name is required")
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
     @Column(name = "father_name")
     private String fatherName;
 
-    @NotBlank(message = "Parent Contact is required")
-    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Invalid parent contact number")
     @Column(name = "parent_contact")
     private String parentContact;
 
-    @NotBlank(message = "Address is required")
     private String address;
 
-    @NotBlank(message = "Blood Group is required")
-    @Pattern(regexp = "^(A|B|AB|O)[+-]$", message = "Invalid blood group (e.g., A+, B-, O+)")
     @Column(name = "blood_group")
     private String bloodGroup;
+    
+    private String admissionSlip;
+    
+    private String aadharImage;
+    
+    private String cuetno;
 
    
 }
