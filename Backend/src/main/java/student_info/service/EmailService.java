@@ -35,16 +35,16 @@ public class EmailService {
 
     private static final Logger logger = Logger.getLogger(EmailService.class.getName());
 
-    // ✅ 1. Send Signup Notification to ALL Super Admins
+    // 1. Send Signup Notification to ALL Super Admins
     public void sendAdminSignUpNotification(String name, String email, String adminRole, Long adminId) {
         try {
             String approvalLink = "https://student-information-system-production-9468.up.railway.app/api/superadmin/verify?adminId=" + adminId;
 
-            // ✅ Fetch only approved Super Admins
+            //  Fetch only approved Super Admins
             List<Admin> superAdmins = adminRepository.findByAdminRoleAndApprovedTrue("SUPERADMIN");
 
             if (superAdmins.isEmpty()) {
-                logger.warning("⚠️ No approved super admins found in the database.");
+                logger.warning("No approved super admins found in the database.");
                 return;
             }
 
@@ -57,7 +57,7 @@ public class EmailService {
 
             helper.setFrom(from);
             helper.setTo(superAdminEmails);
-            helper.setSubject("🛡️ New Admin Registration Approval Needed");
+            helper.setSubject("New Admin Registration Approval Needed");
 
             String html = String.format("""
                 <html>
@@ -79,13 +79,13 @@ public class EmailService {
             helper.setText(html, true);
             mailSender.send(message);
 
-            logger.info("✅ Email sent to all approved Super Admins.");
+            logger.info("Email sent to all approved Super Admins.");
         } catch (MessagingException | MailException e) {
-            logger.log(Level.SEVERE, "❌ Error sending Super Admin email: " + e.getMessage(), e);
+            logger.log(Level.SEVERE, "Error sending Super Admin email: " + e.getMessage(), e);
         }
     }
 
-    // ✅ 2. Confirmation Email after Super Admin approves new Admin
+    //  2. Confirmation Email after Super Admin approves new Admin
     public void sendAdminApprovalConfirmationEmail(String name, String email, String adminRole) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -93,7 +93,7 @@ public class EmailService {
 
             helper.setFrom(from);
             helper.setTo(email);
-            helper.setSubject("✅ Admin Registration Approved");
+            helper.setSubject(" Admin Registration Approved");
 
             String html = String.format("""
                 <html>
@@ -106,16 +106,16 @@ public class EmailService {
                             <li><strong>Role:</strong> %s</li>
                         </ul>
                         <p>You can now login:</p>
-                        <a href="https://student-information-system-production-9468.up.railway.app/admin/login" style="padding: 10px 20px; background: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
+                        <a href="https://studentinfo-phi.vercel.app/login" style="padding: 10px 20px; background: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
                     </body>
                 </html>
             """, name, email, adminRole);
 
             helper.setText(html, true);
             mailSender.send(message);
-            logger.info("✅ Admin confirmation email sent to: " + email);
+            logger.info(" Admin confirmation email sent to: " + email);
         } catch (MessagingException | MailException e) {
-            logger.severe("❌ Error sending admin confirmation: " + e.getMessage());
+            logger.severe("Error sending admin confirmation: " + e.getMessage());
         }
     }
 
@@ -129,7 +129,7 @@ public class EmailService {
 
             helper.setFrom(from);
             helper.setTo(student.getEmail());
-            helper.setSubject("🎓 Student Registration Confirmation");
+            helper.setSubject(" Student Registration Confirmation");
 
             String html = String.format("""
                 <html>
@@ -161,9 +161,9 @@ public class EmailService {
 
             helper.setText(html, true);
             mailSender.send(message);
-            logger.info("📩 Student registration confirmation email sent to: " + student.getEmail());
+            logger.info(" Student registration confirmation email sent to: " + student.getEmail());
         } catch (MessagingException | MailException e) {
-            logger.severe("❌ Failed to send student confirmation email: " + e.getMessage());
+            logger.severe(" Failed to send student confirmation email: " + e.getMessage());
         }
     }
 
@@ -179,11 +179,11 @@ public class EmailService {
             String resetLink = "http://studentinfo-phi.vercel.app/resetpassword?token=" + urlEncodedToken;
 
             // Log for debugging purposes
-            logger.info("🔐 Generated password reset link: " + resetLink);
+            logger.info(" Generated password reset link: " + resetLink);
 
             sendHtmlMessage(admin.getAdminEmail(), "Password Reset Request", resetLink);
         } catch (Exception e) {
-            logger.severe("❌ Failed to prepare password reset email: " + e.getMessage());
+            logger.severe(" Failed to prepare password reset email: " + e.getMessage());
         }
     }
 
@@ -220,9 +220,9 @@ public class EmailService {
 
             helper.setText(html, true);
             mailSender.send(message);
-            logger.info("✅ Password reset email successfully sent to: " + to);
+            logger.info(" Password reset email successfully sent to: " + to);
         } catch (MessagingException e) {
-            logger.severe("❌ Failed to send reset email to: " + to + " - Error: " + e.getMessage());
+            logger.severe(" Failed to send reset email to: " + to + " - Error: " + e.getMessage());
         }
     }
 
@@ -237,7 +237,7 @@ public class EmailService {
             byte[] decoded = Base64.getUrlDecoder().decode(token);
             return new String(decoded, StandardCharsets.UTF_8).split(":", 2);
         } catch (IllegalArgumentException e) {
-            logger.severe("❌ Invalid token: " + e.getMessage());
+            logger.severe(" Invalid token: " + e.getMessage());
             return null;
         }
     }
