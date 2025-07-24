@@ -40,11 +40,6 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/admin/signup",
                                 "/api/admin/login",
-<<<<<<< HEAD
-                                "/api/student/register",
-                                "/api/student/editstudent/**",
-=======
->>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
                                 "/api/admin/forgotpassword",
                                 "/api/admin/resetpassword",
                                 "/api/student/register",

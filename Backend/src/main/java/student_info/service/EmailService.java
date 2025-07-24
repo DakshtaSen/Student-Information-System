@@ -122,11 +122,9 @@ public class EmailService {
     public void sendStudentConfirmationEmail(Student student) {
         try {
             String token = generateToken(student.getId(), student.getEmail());
-<<<<<<< HEAD
-            String editLink = "http://localhost:3000/student/edit/" + token; // React frontend link
-=======
-            String editLink = "http://studentinfo-phi.vercel.app/student/edit/" + token; // React frontend link
->>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
+
+            String editLink = "https://student-information-system-zeta.vercel.app/student/edit/" + token; // React frontend link
+
 
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -170,10 +168,9 @@ public class EmailService {
             logger.severe("❌ Failed to send student confirmation email: " + e.getMessage());
         }
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
+
+
     public void sendPasswordResetEmail(Admin admin) {
         try {
             // Use URL-safe Base64 encoding and proper charset
@@ -183,11 +180,10 @@ public class EmailService {
             
             // URL encode the token to handle any special characters
             String urlEncodedToken = URLEncoder.encode(encodedToken, StandardCharsets.UTF_8.name());
-<<<<<<< HEAD
-            String resetLink = "http://localhost:3000/resetpassword?token=" + urlEncodedToken;
-=======
-            String resetLink = "http://studentinfo-phi.vercel.app/resetpassword?token=" + urlEncodedToken;
->>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
+
+          
+            String resetLink = "https://student-information-system-zeta.vercel.app/resetpassword?token=" + urlEncodedToken;
+
 
             // Log for debugging purposes
             logger.info("🔐 Generated password reset link: " + resetLink);
@@ -198,60 +194,49 @@ public class EmailService {
         }
     }
 
-    public void sendHtmlMessage(String to, String subject, String resetLink) {
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
+public void sendHtmlMessage(String to, String subject, String resetLink) {
+    try {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
 
-            helper.setFrom(from);
-            helper.setTo(to);
-            helper.setSubject(subject);
+        helper.setFrom(from);
+        helper.setTo(to);
+        helper.setSubject(subject);
 
-            // Improved HTML email with better styling and fallback text
-            String html = "<!DOCTYPE html>"
-                    + "<html>"
-                    + "<head>"
-                    + "<meta charset='UTF-8'>"
-                    + "<style>"
-                    + "  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }"
-                    + "  .button { background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold; }"
-                    + "  .footer { margin-top: 20px; font-size: 12px; color: #777; }"
-                    + "</style>"
-                    + "</head>"
-                    + "<body>"
-                    + "<h2>Password Reset Request</h2>"
-<<<<<<< HEAD
-                    + "<p>We received a request to reset your password. Click the button below to proceed:</p>"
-                    + "<p><a href='" + resetLink + "' class='button' target='_blank'>Reset Password</a></p>"
-                    + "<p>If the button doesn't work, copy and paste this link into your browser:</p>"
-=======
-                    + "<p>We received a request to reset your password. Click the button below link to proceed:</p>"
->>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
-                    + "<p><code>" + resetLink + "</code></p>"
-                    + "<div class='footer'>"
-                    + "<p>If you didn't request this password reset, please ignore this email.</p>"
-                    + "<p>This link will expire in 24 hours for security reasons.</p>"
-                    + "</div>"
-                    + "</body>"
-                    + "</html>";
+        // Improved HTML email with better styling and fallback text
+        String html = "<!DOCTYPE html>"
+                + "<html>"
+                + "<head>"
+                + "<meta charset='UTF-8'>"
+                + "<style>"
+                + "  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }"
+                + "  .button { background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold; }"
+                + "  .footer { margin-top: 20px; font-size: 12px; color: #777; }"
+                + "</style>"
+                + "</head>"
+                + "<body>"
+                + "<h2>Password Reset Request</h2>"
+                + "<p>We received a request to reset your password. Click the button below link to proceed:</p>"
+                + "<p><code>" + resetLink + "</code></p>"
+                + "<div class='footer'>"
+                + "<p>If you didn't request this password reset, please ignore this email.</p>"
+                + "<p>This link will expire in 24 hours for security reasons.</p>"
+                + "</div>"
+                + "</body>"
+                + "</html>";
 
-            helper.setText(html, true);
-            mailSender.send(message);
-            logger.info("✅ Password reset email successfully sent to: " + to);
-        } catch (MessagingException e) {
-            logger.severe("❌ Failed to send reset email to: " + to + " - Error: " + e.getMessage());
-        }
+        helper.setText(html, true);
+        mailSender.send(message);
+        logger.info("✅ Password reset email successfully sent to: " + to);
+    } catch (MessagingException e) {
+        logger.severe("❌ Failed to send reset email to: " + to + " - Error: " + e.getMessage());
     }
-
-<<<<<<< HEAD
+}
     // Token Utility Methods
     public String generateToken(Long StudentId, String email) {
         String combined = StudentId + ":" + email;
-=======
     // ✅ Token Utility
-    public String generateToken(Long long1, String email) {
-        String combined = long1 + ":" + email;
->>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
+    
         return Base64.getUrlEncoder().encodeToString(combined.getBytes(StandardCharsets.UTF_8));
     }
 

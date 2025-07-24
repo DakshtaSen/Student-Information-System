@@ -25,19 +25,9 @@ public class Student {
     private String enrollmentNo;
 
     private String image;
-<<<<<<< HEAD
-
-    private String admissionSlip;
-    private String aadharImage;
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
-    private String email;
-
-=======
  
->>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
     private String gender;
-    private String cuetno;
+    
     private Date dob;
     
     private String course;

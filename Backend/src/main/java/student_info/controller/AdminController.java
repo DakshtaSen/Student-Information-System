@@ -36,24 +36,19 @@ public class AdminController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> registerAdmin(@Valid @RequestBody SignUpRequest request) {
-        System.out.println("admin data:");
-<<<<<<< HEAD
      
         String response = adminService.registerAdmin(request);
         System.out.println(response);
         if (response.equals("Email already in use.")) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response); // 409 Conflict
         }
-=======
 
-        String response = adminService.registerAdmin(request);
-        System.out.println(response);
+//        String response = adminService.registerAdmin(request);
+//
+//        if ("Email already in use.".equals(response)) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body(response); // 409 Conflict
+//        }
 
-        if ("Email already in use.".equals(response)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response); // 409 Conflict
-        }
-
->>>>>>> 78c32857a3837ffde2b866e891a4256ebdad80f1
         return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201 Created
     }
     @PostMapping("/login")
