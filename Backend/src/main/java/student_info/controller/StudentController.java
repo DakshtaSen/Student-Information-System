@@ -127,8 +127,13 @@ public class StudentController {
             existing.setCourse(incomingStudent.getCourse());
             existing.setBatch(incomingStudent.getBatch());
             existing.setContact(incomingStudent.getContact());
+            existing.setPermanentaddress(incomingStudent.getPermanentaddress());
+            existing.setGuardianName(incomingStudent.getGuardianName());
+            existing.setGuardianContact(incomingStudent.getGuardianContact());
             existing.setFatherName(incomingStudent.getFatherName());
+            existing.setMotherName(incomingStudent.getMotherName());
             existing.setParentContact(incomingStudent.getParentContact());
+            existing.setMotherContact(incomingStudent.getMotherContact());
             existing.setAddress(incomingStudent.getAddress());
             existing.setBloodGroup(incomingStudent.getBloodGroup());
             existing.setDob(incomingStudent.getDob());
