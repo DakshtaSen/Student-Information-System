@@ -1072,7 +1072,7 @@ const MAX_IMAGE_BYTES = MAX_IMAGE_MB * 1024 * 1024;
 const validationSchema = Yup.object({
   rollNo: Yup.string().required('Roll number is required').matches(/^[A-Za-z0-9-]+$/, 'Only letters, numbers, and hyphens allowed'),
   enrollmentNo: Yup.string().matches(/^[A-Za-z0-9-]+$/, 'Only letters, numbers, and hyphens allowed'),
-  cuetno: Yup.string().required("CUET number is required"),
+  // cuetno: Yup.string().required("CUET number is required"),
   name: Yup.string().required('Name is required').min(2),
   fatherName: Yup.string().required('Father name is required').min(2),
   parentContact: Yup.string().required('Parent phone is required').matches(/^[0-9]{10}$/, 'Must be 10 digits'),
@@ -1347,9 +1347,9 @@ const Studentsignup = () => {
                   </div>
                   {/* CUET No */}
                   <div className="form-group">
-                    <label>CUET Application No*</label>
+                    <label>CUET Application No</label>
                     <Field type="text" name="cuetno" className="form-input" />
-                    <ErrorMessage name="cuetno" component="div" className="error-message" />
+                    <ErrorMessage name="cuetno" component="div" className="error-message"/>
                   </div>
                 </div>
               </div>
@@ -1396,7 +1396,7 @@ const Studentsignup = () => {
                   {[
                     ['image', 'Profile Photo'],
                     ['aadharImage', 'Aadhar Card'],
-                    ['admissionSlip', 'Admission Slip'],
+                    ['admissionSlip', 'Admission Slip / Fee Receipt'],
                   ].map(([field, label]) => (
                     <div className="form-group full-width photoupload" key={field}>
                       <label>{label}*</label>

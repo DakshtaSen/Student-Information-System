@@ -35,16 +35,16 @@ public class EmailService {
 
     private static final Logger logger = Logger.getLogger(EmailService.class.getName());
 
-    // ✅ 1. Send Signup Notification to ALL Super Admins
+    // 1. Send Signup Notification to ALL Super Admins
     public void sendAdminSignUpNotification(String name, String email, String adminRole, Long adminId) {
         try {
             String approvalLink = "https://student-information-system-production-9468.up.railway.app/api/superadmin/verify?adminId=" + adminId;
 
-            // ✅ Fetch only approved Super Admins
+            //  Fetch only approved Super Admins
             List<Admin> superAdmins = adminRepository.findByAdminRoleAndApprovedTrue("SUPERADMIN");
 
             if (superAdmins.isEmpty()) {
-                logger.warning("⚠️ No approved super admins found in the database.");
+                logger.warning("No approved super admins found in the database.");
                 return;
             }
 
@@ -57,7 +57,7 @@ public class EmailService {
 
             helper.setFrom(from);
             helper.setTo(superAdminEmails);
-            helper.setSubject("🛡️ New Admin Registration Approval Needed");
+            helper.setSubject("New Admin Registration Approval Needed");
 
             String html = String.format("""
                 <html>
@@ -79,13 +79,13 @@ public class EmailService {
             helper.setText(html, true);
             mailSender.send(message);
 
-            logger.info("✅ Email sent to all approved Super Admins.");
+            logger.info("Email sent to all approved Super Admins.");
         } catch (MessagingException | MailException e) {
-            logger.log(Level.SEVERE, "❌ Error sending Super Admin email: " + e.getMessage(), e);
+            logger.log(Level.SEVERE, "Error sending Super Admin email: " + e.getMessage(), e);
         }
     }
 
-    // ✅ 2. Confirmation Email after Super Admin approves new Admin
+    //  2. Confirmation Email after Super Admin approves new Admin
     public void sendAdminApprovalConfirmationEmail(String name, String email, String adminRole) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -93,7 +93,7 @@ public class EmailService {
 
             helper.setFrom(from);
             helper.setTo(email);
-            helper.setSubject("✅ Admin Registration Approved");
+            helper.setSubject(" Admin Registration Approved");
 
             String html = String.format("""
                 <html>
@@ -106,16 +106,16 @@ public class EmailService {
                             <li><strong>Role:</strong> %s</li>
                         </ul>
                         <p>You can now login:</p>
-                        <a href="https://student-information-system-production-9468.up.railway.app/admin/login" style="padding: 10px 20px; background: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
+                        <a href="https://studentinfo-phi.vercel.app/login" style="padding: 10px 20px; background: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
                     </body>
                 </html>
             """, name, email, adminRole);
 
             helper.setText(html, true);
             mailSender.send(message);
-            logger.info("✅ Admin confirmation email sent to: " + email);
+            logger.info(" Admin confirmation email sent to: " + email);
         } catch (MessagingException | MailException e) {
-            logger.severe("❌ Error sending admin confirmation: " + e.getMessage());
+            logger.severe("Error sending admin confirmation: " + e.getMessage());
         }
     }
 
@@ -131,7 +131,7 @@ public class EmailService {
 
             helper.setFrom(from);
             helper.setTo(student.getEmail());
-            helper.setSubject("🎓 Student Registration Confirmation");
+            helper.setSubject(" Student Registration Confirmation");
 
             String html = String.format("""
                 <html>
@@ -170,9 +170,9 @@ public class EmailService {
 
             helper.setText(html, true);
             mailSender.send(message);
-            logger.info("📩 Student registration confirmation email sent to: " + student.getEmail());
+            logger.info(" Student registration confirmation email sent to: " + student.getEmail());
         } catch (MessagingException | MailException e) {
-            logger.severe("❌ Failed to send student confirmation email: " + e.getMessage());
+            logger.severe(" Failed to send student confirmation email: " + e.getMessage());
         }
     }
 
@@ -193,52 +193,52 @@ public class EmailService {
 
 
             // Log for debugging purposes
-            logger.info("🔐 Generated password reset link: " + resetLink);
+            logger.info(" Generated password reset link: " + resetLink);
 
             sendHtmlMessage(admin.getAdminEmail(), "Password Reset Request", resetLink);
         } catch (Exception e) {
-            logger.severe("❌ Failed to prepare password reset email: " + e.getMessage());
+            logger.severe(" Failed to prepare password reset email: " + e.getMessage());
         }
     }
+                                        
+    public void sendHtmlMessage(String to, String subject, String resetLink) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
 
-public void sendHtmlMessage(String to, String subject, String resetLink) {
-    try {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
+            helper.setFrom(from);
+            helper.setTo(to);
+            helper.setSubject(subject);
 
-        helper.setFrom(from);
-        helper.setTo(to);
-        helper.setSubject(subject);
+            // Improved HTML email with better styling and fallback text
+            String html = "<!DOCTYPE html>"
+                    + "<html>"
+                    + "<head>"
+                    + "<meta charset='UTF-8'>"
+                    + "<style>"
+                    + "  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }"
+                    + "  .button { background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold; }"
+                    + "  .footer { margin-top: 20px; font-size: 12px; color: #777; }"
+                    + "</style>"
+                    + "</head>"
+                    + "<body>"
+                    + "<h2>Password Reset Request</h2>"
+                    + "<p>We received a request to reset your password. Click the button below link to proceed:</p>"
+                    + "<p><code>" + resetLink + "</code></p>"
+                    + "<div class='footer'>"
+                    + "<p>If you didn't request this password reset, please ignore this email.</p>"
+                    + "<p>This link will expire in 24 hours for security reasons.</p>"
+                    + "</div>"
+                    + "</body>"
+                    + "</html>";
 
-        // Improved HTML email with better styling and fallback text
-        String html = "<!DOCTYPE html>"
-                + "<html>"
-                + "<head>"
-                + "<meta charset='UTF-8'>"
-                + "<style>"
-                + "  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }"
-                + "  .button { background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold; }"
-                + "  .footer { margin-top: 20px; font-size: 12px; color: #777; }"
-                + "</style>"
-                + "</head>"
-                + "<body>"
-                + "<h2>Password Reset Request</h2>"
-                + "<p>We received a request to reset your password. Click the button below link to proceed:</p>"
-                + "<p><code>" + resetLink + "</code></p>"
-                + "<div class='footer'>"
-                + "<p>If you didn't request this password reset, please ignore this email.</p>"
-                + "<p>This link will expire in 24 hours for security reasons.</p>"
-                + "</div>"
-                + "</body>"
-                + "</html>";
-
-        helper.setText(html, true);
-        mailSender.send(message);
-        logger.info("✅ Password reset email successfully sent to: " + to);
-    } catch (MessagingException e) {
-        logger.severe("❌ Failed to send reset email to: " + to + " - Error: " + e.getMessage());
+            helper.setText(html, true);
+            mailSender.send(message);
+            logger.info("✅ Password reset email successfully sent to: " + to);
+        } catch (MessagingException e) {
+            logger.severe("❌ Failed to send reset email to: " + to + " - Error: " + e.getMessage());
+        }
     }
-}
     // Token Utility Methods
     public String generateToken(Long StudentId, String email) {
         String combined = StudentId + ":" + email;
@@ -252,7 +252,7 @@ public void sendHtmlMessage(String to, String subject, String resetLink) {
             byte[] decoded = Base64.getUrlDecoder().decode(token);
             return new String(decoded, StandardCharsets.UTF_8).split(":", 2);
         } catch (IllegalArgumentException e) {
-            logger.severe("❌ Invalid token: " + e.getMessage());
+            logger.severe(" Invalid token: " + e.getMessage());
             return null;
         }
     }
