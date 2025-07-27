@@ -17,7 +17,7 @@ public class CorsConfig {
 
         // ✅ Allow both Vercel domain and localhost for development
         config.setAllowedOriginPatterns(List.of(
-                "https://studentinfo-phi.vercel.app",
+                "https://student-information-system-zeta.vercel.app",
                 "http://localhost:3000"
         ));
 

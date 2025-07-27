@@ -2,6 +2,9 @@ package student_info.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -11,8 +14,16 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY_STRING = "yourVerySecretKeyThatIsAtLeast32Characters!";
-    private final Key SECRET_KEY = Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes());
+    @Value("${JWT_SECRET}")
+    private String secretKeyString;
+
+    private Key secretKey;
+
+    @PostConstruct
+    public void init() {
+        // Ensure secret key is long enough (at least 32 bytes for HS256)
+        this.secretKey = Keys.hmacShaKeyFor(secretKeyString.getBytes());
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -25,7 +36,7 @@ public class JwtUtil {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
-            .setSigningKey(SECRET_KEY)
+            .setSigningKey(secretKey)
             .build()
             .parseClaimsJws(token)
             .getBody();
@@ -49,7 +60,7 @@ public class JwtUtil {
             .setSubject(username)
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour
-            .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
+            .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact();
     }
 }
