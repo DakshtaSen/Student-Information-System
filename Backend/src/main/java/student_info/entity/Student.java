@@ -35,7 +35,11 @@ public class Student {
     private String batch;
 
     private String contact;
-
+ 
+    private String motherContact;
+    
+    private String guardianContact;
+    
     @Column(name = "roll_no", nullable = false, unique = true)
     private String rollNo;
 
@@ -44,12 +48,17 @@ public class Student {
 
     @Column(name = "father_name")
     private String fatherName;
-
+    
+    private String motherName;
+    
+    private String guardianName;
     @Column(name = "parent_contact")
     private String parentContact;
 
     private String address;
 
+    private String permanentaddress;
+    
     @Column(name = "blood_group")
     private String bloodGroup;
     
@@ -58,6 +67,7 @@ public class Student {
     private String aadharImage;
     
     private String cuetno;
+    
 
    
 }

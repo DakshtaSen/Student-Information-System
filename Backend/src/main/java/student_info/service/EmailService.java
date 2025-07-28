@@ -147,7 +147,14 @@ public class EmailService {
                             <li><strong>Email:</strong> %s</li>
                             <li><strong>Contact:</strong> %s</li>
                             <li><strong>Father's Name:</strong> %s</li>
-                            <li><strong>Parent Contact:</strong> %s</li>
+                            <li><strong>Mother's Name:</strong> %s</li>
+                            <li><strong>guardian Name:</strong> %s</li>
+
+                            <li><strong>Father Contact:</strong> %s</li>
+                            <li><strong>Mother Contact:</strong> %s</li>
+                            <li><strong>guardian Contact:</strong> %s</li>
+
+                            <li><strong> Parmanent Address:</strong> %s</li>
                             <li><strong>Address:</strong> %s</li>
                             <li><strong>Blood Group:</strong> %s</li>
                         </ul>
@@ -158,8 +165,8 @@ public class EmailService {
                 </html>
             """,
                 student.getName(), student.getEnrollmentNo(), student.getCourse(), student.getBatch(),
-                student.getRollNo(), student.getEmail(), student.getContact(), student.getFatherName(),
-                student.getParentContact(), student.getAddress(), student.getBloodGroup(), editLink);
+                student.getRollNo(), student.getEmail(), student.getContact(), student.getFatherName(),student.getMotherName(),student.getGuardianName(),
+                student.getParentContact(),student.getMotherContact(),student.getGuardianContact(),student.getPermanentaddress(), student.getAddress(), student.getBloodGroup(), editLink);
 
             helper.setText(html, true);
             mailSender.send(message);
