@@ -1599,7 +1599,7 @@ const BatchMentorDashboard = () => {
                         </td>
                         <td>
                           {student.aadharImage ? (
-                            <a href={student.aadharImage} target="_blank" rel="noopener noreferrer">View</a>
+                            <a href={student.aadharImage} target="_blank" rel="noopener noreferrer" >View</a>
                           ) : (
                             "N/A"
                           )}
@@ -1639,54 +1639,12 @@ const BatchMentorDashboard = () => {
                               </button>
                             </>
                           )}
-
-
-                          {/* <button onClick={() => {
-                            console.log("Edit button clicked for student:", student.id);
-                            openEditModal(student.id);
-                          }}>Edit</button>
-                          <button onClick={() => handleDeleteStudent(student.id)}>Delete</button> */}
-
-
-                          {/* {defaultStudentIds.has(student.id) && (
-                            <>
-                              <button
-                                className={styles.applyFiltersButtonModern}
-                                style={{ marginRight: 8, padding: "4px 10px", fontSize: "0.95rem" }}
-                                onClick={() => openEditModal(student.id)}
-                                type="button"
-                              >
-                                Edit
-                              </button>
-                              <button
-                                className={styles.clearFiltersButtonModern}
-                                style={{ padding: "4px 10px", fontSize: "0.95rem" }}
-                                onClick={() => handleDeleteStudent(student.id)}
-                                type="button"
-                                disabled={deleteLoadingId === student.id}
-                              >
-                                {deleteLoadingId === student.id ? "Deleting..." : "Delete"}
-                              </button>
-                            </>
-                          )} */}
-
-
-
-
                         </td>
                       </tr>
                     ))}
                 </tbody>
               </table>
-              {/* <TablePagination
-                component="div"
-                count={searchResults.length}
-                page={page}
-                onPageChange={handleChangePage}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                rowsPerPageOptions={[5, 10, 25, 50]}
-              /> */}
+         
             </div>
           ) : (
             <div className={styles.noResultsCard}>No students found.</div>

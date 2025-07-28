@@ -62,7 +62,7 @@ const PlayfulAvatar = styled(Avatar)(({ theme }) => ({
 
 const developers = [
   {
-    name: 'Kushagra Singh Bias',
+    name: 'Kushagra Singh Bais',
     role: 'Frontend Developer',
     img:Kushagraimg,
     bio: 'Passionate about building beautiful and performant UIs with React and Material-UI.'
