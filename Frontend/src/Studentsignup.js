@@ -1070,7 +1070,7 @@ const MAX_IMAGE_BYTES = MAX_IMAGE_MB * 1024 * 1024;
 
 // Mapping courses to prefix and example roll number format
 const courseRollFormats = {
-  "MCA-5yrs": { prefix: "IC", example: "MCA-2K22-01" },
+  "MCA-5yrs": { prefix: "IC", example: "IC-2K22-01" },
   "MTech (IT)-5yrs": { prefix: "IT", example: "IT-2K22-01" },
   "MTech (CS)-5yrs": { prefix: "CS", example: "CS-2K22-01" },
   "MBA (MS)-5yrs": { prefix: "IM", example: "MBA-MS-2K22-01" },
@@ -1099,7 +1099,7 @@ const getValidationSchema = (course, batch) => {
       .matches(
         rollNoRegex,
         `Roll number must match format: ${format ? format.example.replace("2K22", batchSuffix) : "Alphanumeric and hyphens"}`
-      ),
+      ).min(5),
     enrollmentNo: Yup.string().matches(/^[A-Za-z0-9-]+$/, 'Only letters, numbers, and hyphens allowed').nullable(),
     name: Yup.string().required('Name is required').min(2),
     fatherName: Yup.string().required('Father name is required').min(2),
@@ -1169,7 +1169,7 @@ const Studentsignup = () => {
 
   useEffect(() => {
     if (isEditMode && token) {
-      axios.get(`https://student-information-system-production-9468.up.railway.app/api/student/editstudent/${token}`)
+      axios.get(`http://student-information-system-production-2d2c.up.railway.app/api/student/editstudent/${token}`)
         .then(res => setSavedData(res.data))
         .catch(() => alert("Failed to fetch student data"))
         .finally(() => setLoading(false));
@@ -1179,8 +1179,8 @@ const Studentsignup = () => {
   const uploadToCloudinary = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', 'ml_default');
-    const res = await fetch('https://api.cloudinary.com/v1_1/dt36wnzac/image/upload', {
+    formData.append('upload_preset', 'StudentImages');
+    const res = await fetch('https://api.cloudinary.com/v1_1/duv0r2akb/image/upload', {
       method: 'POST',
       body: formData,
     });
