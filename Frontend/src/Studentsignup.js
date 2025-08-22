@@ -1065,8 +1065,9 @@ import { motion } from 'framer-motion';
 import './Studentsignup.css';
 import axios from 'axios';
 
-const MAX_IMAGE_MB = 2;
-const MAX_IMAGE_BYTES = MAX_IMAGE_MB * 1024 * 1024;
+// const MAX_IMAGE_MB = 2;
+const MAX_IMAGE_KB = 500;
+const MAX_IMAGE_BYTES = MAX_IMAGE_KB * 1024;
 
 // Mapping courses to prefix and example roll number format
 const courseRollFormats = {
@@ -1122,7 +1123,7 @@ const getValidationSchema = (course, batch) => {
       .test('fileOrUrl', 'Photo required', value =>
         typeof value === 'string' ? !!value : value instanceof File && !!value
       )
-      .test('fileSize', `Max file size is ${MAX_IMAGE_MB}MB`, value => {
+      .test('fileSize', `Max file size is ${MAX_IMAGE_KB}KB`, value => {
         if (typeof value === 'string') return true;
         return value && value.size <= MAX_IMAGE_BYTES;
       })
@@ -1135,7 +1136,7 @@ const getValidationSchema = (course, batch) => {
       .test('fileOrUrl', 'Aadhar card photo required', value =>
         typeof value === 'string' ? !!value : value instanceof File && !!value
       )
-      .test('fileSize', `Max file size is ${MAX_IMAGE_MB}MB`, value => {
+      .test('fileSize', `Max file size is ${MAX_IMAGE_KB}KB`, value => {
         if (typeof value === 'string') return true;
         return value && value.size <= MAX_IMAGE_BYTES;
       })
@@ -1148,7 +1149,7 @@ const getValidationSchema = (course, batch) => {
       .test('fileOrUrl', 'Admission slip photo required', value =>
         typeof value === 'string' ? !!value : value instanceof File && !!value
       )
-      .test('fileSize', `Max file size is ${MAX_IMAGE_MB}MB`, value => {
+      .test('fileSize', `Max file size is ${MAX_IMAGE_KB}KB`, value => {
         if (typeof value === 'string') return true;
         return value && value.size <= MAX_IMAGE_BYTES;
       })
@@ -1169,7 +1170,7 @@ const Studentsignup = () => {
 
   useEffect(() => {
     if (isEditMode && token) {
-      axios.get(`http://student-information-system-production-2d2c.up.railway.app/api/student/editstudent/${token}`)
+      axios.get(`https://student-information-system-production-2d2c.up.railway.app/api/student/editstudent/${token}`)
         .then(res => setSavedData(res.data))
         .catch(() => alert("Failed to fetch student data"))
         .finally(() => setLoading(false));
@@ -1213,8 +1214,8 @@ const Studentsignup = () => {
       };
 
       const url = isEditMode
-        ? `https://student-information-system-production-9468.up.railway.app/api/student/editstudent/${token}`
-        : 'https://student-information-system-production-9468.up.railway.app/api/student/register';
+        ? `https://student-information-system-production-2d2c.up.railway.app/api/student/editstudent/${token}`
+        : 'https://student-information-system-production-2d2c.up.railway.app/api/student/register';
 
       const method = isEditMode ? 'put' : 'post';
 
@@ -1228,7 +1229,7 @@ const Studentsignup = () => {
       if (res.status === 200 || res.status === 201) {
         alert(isEditMode ? "Student info updated successfully." : "Student registered successfully.");
         if (isEditMode) {
-          const updatedRes = await axios.get(`https://student-information-system-production-9468.up.railway.app/api/student/editstudent/${token}`);
+          const updatedRes = await axios.get(`https://student-information-system-production-2d2c.up.railway.app/api/student/editstudent/${token}`);
           setSavedData(updatedRes.data);
           setFormKey(k => k + 1);
         } else {

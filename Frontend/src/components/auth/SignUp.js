@@ -544,7 +544,7 @@ import ClassIcon from '@mui/icons-material/Class';
 import GroupsIcon from '@mui/icons-material/Groups';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-const baseURL = "http://student-information-system-production-2d2c.up.railway.app";
+const baseURL = "https://student-information-system-production-2d2c.up.railway.app";
 
 const SignUp = () => {
   const navigate = useNavigate();
