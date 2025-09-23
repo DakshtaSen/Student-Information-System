@@ -4,6 +4,7 @@ import { Box, Container, Typography, Grid, Card, CardContent, Avatar } from '@mu
 import { styled, keyframes } from '@mui/system';
 import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
+import Adityaimg from '../assets/adityaimg.jpg';
 import Kushagraimg from '../assets/kushagraimg.jpg';
 import Lakshyaimg from '../assets/lakshyaphoto.jpg';
 import Paridhiimg from '../assets/paridhiphoto.jpg';
@@ -61,6 +62,12 @@ const PlayfulAvatar = styled(Avatar)(({ theme }) => ({
 }));
 
 const developers = [
+  {
+    name: 'Aditya Agrawal ',
+    role: 'Project Mentor',
+    img:Adityaimg,
+    bio: 'Passionate Team Leader.'
+  },
   {
     name: 'Kushagra Singh Bais',
     role: 'Frontend Developer',
