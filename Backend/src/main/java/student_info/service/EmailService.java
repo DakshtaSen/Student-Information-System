@@ -38,7 +38,7 @@ public class EmailService {
     // 1. Send Signup Notification to ALL Super Admins
     public void sendAdminSignUpNotification(String name, String email, String adminRole, Long adminId) {
         try {
-            String approvalLink = "https://student-information-system-production-9468.up.railway.app/api/superadmin/verify?adminId=" + adminId;
+            String approvalLink = "https://student-information-system-production-2d2c.up.railway.app/api/superadmin/verify?adminId=" + adminId;
 
             //  Fetch only approved Super Admins
             List<Admin> superAdmins = adminRepository.findByAdminRoleAndApprovedTrue("SUPERADMIN");
