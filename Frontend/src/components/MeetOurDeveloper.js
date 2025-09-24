@@ -4,7 +4,7 @@ import { Box, Container, Typography, Grid, Card, CardContent, Avatar } from '@mu
 import { styled, keyframes } from '@mui/system';
 import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
-import Adityaimg from '../assets/adityaimg.jpg';
+import Adityaimg from '../assets/adityaphoto.jpg';
 import Kushagraimg from '../assets/kushagraimg.jpg';
 import Lakshyaimg from '../assets/lakshyaphoto.jpg';
 import Paridhiimg from '../assets/paridhiphoto.jpg';
