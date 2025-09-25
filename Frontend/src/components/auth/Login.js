@@ -933,7 +933,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        'https://student-information-system-production-9468.up.railway.app/api/admin/login',
+        'https://student-information-system-production-2d2c.up.railway.app/api/admin/login',
         {
           adminEmail: formData.adminEmail,
           adminPassword: formData.adminPassword,

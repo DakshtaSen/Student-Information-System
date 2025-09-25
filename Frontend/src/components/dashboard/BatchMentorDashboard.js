@@ -1155,7 +1155,7 @@ import { TablePagination } from "@mui/material";
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://student-information-system-production-9468.up.railway.app/api/student';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://student-information-system-production-2d2c.up.railway.app/api/student';
 
 const BatchMentorDashboard = () => {
   const [dropdownLoading, setDropdownLoading] = useState(false);

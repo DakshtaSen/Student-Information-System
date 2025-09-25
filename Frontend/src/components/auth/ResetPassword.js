@@ -417,7 +417,7 @@ const ResetPassword = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('https://student-information-system-production-9468.up.railway.app/api/admin/resetpassword',
+      const response = await axios.post('https://student-information-system-production-2d2c.up.railway.app/api/admin/resetpassword',
         {
           token,
           newPassword: passwords.newPassword

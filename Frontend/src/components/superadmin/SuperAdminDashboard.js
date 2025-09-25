@@ -45,7 +45,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import axios from 'axios';
 import './SuperAdminDashboard.css';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://student-information-system-production-9468.up.railway.app';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://student-information-system-production-2d2c.up.railway.app';
 
 const StatCard = ({ title, count, icon, color }) => {
   return (
