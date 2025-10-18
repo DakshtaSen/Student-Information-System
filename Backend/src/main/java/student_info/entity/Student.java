@@ -31,11 +31,23 @@ public class Student {
     private Date dob;
     
     private String course;
+    
+    private String category;
 
     private String batch;
 
     private String contact;
  
+    private String religion;
+    
+    private String ews;
+    
+    private String pwd;
+    
+    private String annualIncome;
+    
+    private String minority;
+    
     private String motherContact;
     
     private String guardianContact;
@@ -67,7 +79,5 @@ public class Student {
     private String aadharImage;
     
     private String cuetno;
-    
-
-   
+     
 }
