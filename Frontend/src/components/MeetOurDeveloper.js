@@ -169,13 +169,12 @@ const MeetOurDeveloper = () => {
   const theme = useTheme();
   const background =
     'linear-gradient(120deg, #f7cac9 0%, #92a8d1 100%)';
-
   return (
     <ThemeProvider theme={localTheme}>
       <Box
         sx={{
           minHeight: '100vh',
-          width: '100vw',
+          width: '100%',
           position: 'relative',
           background: background,
           py: 8,
